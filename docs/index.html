@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progresso de Estudos - Analista Legislativo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .progress-overview {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .progress-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .progress-card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .progress-bar-container {
+            background: #e9ecef;
+            border-radius: 50px;
+            height: 40px;
+            overflow: hidden;
+            position: relative;
+            margin: 15px 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            opacity: 0.9;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .discipline {
+            margin-bottom: 30px;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .discipline-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .discipline-header:hover {
+            opacity: 0.9;
+        }
+
+        .discipline-title {
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .discipline-progress {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .mini-progress {
+            width: 150px;
+            height: 20px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .mini-progress-bar {
+            height: 100%;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        .discipline-content {
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .discipline-content.collapsed {
+            display: none;
+        }
+
+        .topic {
+            background: white;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .topic-name {
+            flex: 1;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .topic-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="range"] {
+            width: 200px;
+            height: 8px;
+            border-radius: 5px;
+            background: #e9ecef;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+        }
+
+        .value-display {
+            min-width: 40px;
+            text-align: center;
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            padding: 30px;
+            justify-content: center;
+            background: #f8f9fa;
+            border-top: 2px solid #e9ecef;
+        }
+
+        button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-reset {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-export {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-import {
+            background: #ffc107;
+            color: #333;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        @media (max-width: 768px) {
+            .topic {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            input[type="range"] {
+                width: 100%;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Controle de Estudos - Analista Legislativo</h1>
+            <p>Analista de Ciência de Dados - ALEGO</p>
+        </div>
+
+        <div class="progress-overview">
+            <div class="progress-card">
+                <h2>Progresso Geral</h2>
+                <p id="saveStatus" style="margin-top:8px;color:#666;font-size:0.95em;">Nenhum salvamento local encontrado</p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="totalProgress">0%</div>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalPercent">0%</div>
+                        <div class="stat-label">Concluído</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalTopics">0</div>
+                        <div class="stat-label">Total de Tópicos</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="completedTopics">0</div>
+                        <div class="stat-label">Tópicos Completos (10/10)</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="averageScore">0.0</div>
+                        <div class="stat-label">Nota Média</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content" id="disciplinesContainer"></div>
+
+        <div class="buttons">
+            <button class="btn-save" onclick="saveProgress()">
+                <span class="emoji">💾</span>Salvar Progresso
+            </button>
+            <button class="btn-export" onclick="exportProgress()">
+                <span class="emoji">📥</span>Exportar JSON
+            </button>
+            <button class="btn-import" onclick="document.getElementById('importFile').click()">
+                <span class="emoji">📤</span>Importar JSON
+            </button>
+            <button class="btn-reset" onclick="resetProgress()">
+                <span class="emoji">🔄</span>Resetar Tudo
+            </button>
+            <input type="file" id="importFile" accept=".json" style="display:none" onchange="importProgress(event)">
+        </div>
+    </div>
+
+    <script>
+        const studyContent = {
+            "CONHECIMENTOS BÁSICOS": {
+                "LÍNGUA PORTUGUESA": [
+                    "Interpretação e Compreensão de texto",
+                    "Marcas de textualidade: coesão, coerência e intertextualidade",
+                    "Modos de organização discursiva",
+                    "Tipos textuais, características específicas",
+                    "Tipologia da frase portuguesa",
+                    "Estrutura da frase portuguesa",
+                    "Tipos de discurso",
+                    "Registros de linguagem. Funções da linguagem",
+                    "Elementos dos atos de comunicação",
+                    "Estrutura e formação de palavras",
+                    "Classes de palavras (aspectos morfológicos, sintáticos, semânticos)",
+                    "Semântica: sentido próprio e figurado",
+                    "Vocabulário: neologismos, arcaísmos, estrangeirismos",
+                    "Ortografia e acentuação gráfica, crase"
+                ],
+                "RACIOCÍNIO LÓGICO": [
+                    "Proposições lógicas e conectivos",
+                    "Equivalências lógicas",
+                    "Tabelas Verdade",
+                    "Argumentação Lógica",
+                    "Diagramas lógicos, tabelas e gráficos",
+                    "Sequências Lógicas",
+                    "Princípios de contagem e probabilidade"
+                ],
+                "NOÇÕES DE INFORMÁTICA": [
+                    "Arquivos digitais: padrões e características",
+                    "Arquivos PDF",
+                    "Sistema operacional Windows 10+",
+                    "MS Word 2010 BR ou superior",
+                    "Manipulação de arquivos no Word",
+                    "MS Excel 2010 BR ou superior",
+                    "Internet: conceitos e funcionamento",
+                    "Transferência de arquivos e dados",
+                    "Compartilhamento e armazenamento em nuvem"
+                ],
+                "REALIDADE DE GOIÁS": [
+                    "Formação territorial e povoamento",
+                    "Goiás no Império (1822-1889)",
+                    "Goiás na Primeira República (1889-1930)",
+                    "A mudança da capital e modernização (1930-1960)",
+                    "Goiás contemporâneo (1960-atualidade)",
+                    "Aspectos físicos e naturais",
+                    "Aspectos humanos e populacionais",
+                    "Aspectos econômicos",
+                    "Organização político-administrativa",
+                    "Questões contemporâneas"
+                ],
+                "LEGISLAÇÃO DO ESTADO DE GOIÁS": [
+                    "Resolução nº 1.073/2001 - Regulamento Administrativo ALEGO"
+                ]
+            },
+            "CONHECIMENTOS ESPECÍFICOS": {
+                "ANALISTA DE CIÊNCIA DE DADOS": [
+                    "Fundamentos de Ciência de Dados",
+                    "Classificação",
+                    "Coleta, tratamento, armazenamento de dados",
+                    "Regras de associação",
+                    "Modelagem relacional e multidimensional",
+                    "Aprendizagem de máquina: fundamentos",
+                    "Regressão linear",
+                    "Regressão logística",
+                    "Análise de agrupamentos (clusterização)",
+                    "Classificação (Machine Learning)",
+                    "Detecção de anomalias",
+                    "Modelagem preditiva",
+                    "Visão computacional",
+                    "Mineração de texto",
+                    "Redes neurais artificiais",
+                    "Deep learning",
+                    "Visualização e análise exploratória de dados",
+                    "Business intelligence",
+                    "Oracle BIEE",
+                    "Oracle Data Visualization",
+                    "QlikView",
+                    "PowerBI",
+                    "Processamento de Linguagem Natural",
+                    "Python: Fundamentos",
+                    "Python para Análise de Dados",
+                    "Desenvolvimento Web com Python",
+                    "Python para Machine Learning",
+                    "Inteligência Artificial"
+                ]
+            }
+        };
+
+        let progressData = {};
+
+        const STORAGE_KEY = 'studyProgress_v2';
+        const META_KEY = STORAGE_KEY + '_meta';
+        const DB_NAME = 'progressDB';
+        const STORE_NAME = 'progressStore';
+        let autoSaveTimer = null;
+
+        function idbAvailable() {
+            return !!window.indexedDB;
+        }
+
+        function idbOpen() {
+            return new Promise((resolve, reject) => {
+                const req = indexedDB.open(DB_NAME, 1);
+                req.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME);
+                    }
+                };
+                req.onsuccess = (e) => resolve(e.target.result);
+                req.onerror = (e) => reject(e.target.error);
+            });
+        }
+
+        async function idbSave(data) {
+            const db = await idbOpen();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                tx.objectStore(STORE_NAME).put(data, STORAGE_KEY);
+                tx.oncomplete = () => { db.close(); resolve(); };
+                tx.onerror = () => { db.close(); reject(tx.error); };
+            });
+        }
+
+        async function idbLoad() {
+            const db = await idbOpen();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readonly');
+                const req = tx.objectStore(STORE_NAME).get(STORAGE_KEY);
+                req.onsuccess = () => { db.close(); resolve(req.result); };
+                req.onerror = () => { db.close(); reject(req.error); };
+            });
+        }
+
+        async function idbClear() {
+            const db = await idbOpen();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                tx.objectStore(STORE_NAME).delete(STORAGE_KEY);
+                tx.oncomplete = () => { db.close(); resolve(); };
+                tx.onerror = () => { db.close(); reject(tx.error); };
+            });
+        }
+
+        async function saveToStorage() {
+            try {
+                if (idbAvailable()) {
+                    await idbSave(progressData);
+                    localStorage.setItem(META_KEY, JSON.stringify({ type: 'indexedDB', ts: new Date().toISOString() }));
+                } else {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(progressData));
+                    localStorage.setItem(META_KEY, JSON.stringify({ type: 'localStorage', ts: new Date().toISOString() }));
+                }
+                updateStatus();
+            } catch (err) {
+                console.error('saveToStorage error', err);
+            }
+        }
+
+        async function loadFromStorage() {
+            try {
+                if (idbAvailable()) {
+                    const loaded = await idbLoad();
+                    if (loaded) {
+                        progressData = loaded;
+                        return;
+                    }
+                }
+                const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('studyProgress');
+                if (raw) {
+                    progressData = JSON.parse(raw);
+                    return;
+                }
+
+                // Se não havia nada salvo, inicializa com zeros
+                for (const [category, disciplines] of Object.entries(studyContent)) {
+                    for (const [discipline, topics] of Object.entries(disciplines)) {
+                        topics.forEach(topic => {
+                            const key = `${category}|${discipline}|${topic}`;
+                            if (!(key in progressData)) progressData[key] = 0;
+                        });
+                    }
+                }
+            } catch (err) {
+                console.error('loadFromStorage error', err);
+            }
+        }
+
+        async function clearStorage() {
+            try {
+                if (idbAvailable()) await idbClear();
+                localStorage.removeItem(STORAGE_KEY);
+                localStorage.removeItem('studyProgress');
+                localStorage.removeItem(META_KEY);
+                updateStatus();
+            } catch (err) {
+                console.error('clearStorage error', err);
+            }
+        }
+
+        function updateStatus() {
+            const el = document.getElementById('saveStatus');
+            if (!el) return;
+            const metaRaw = localStorage.getItem(META_KEY);
+            if (metaRaw) {
+                try {
+                    const meta = JSON.parse(metaRaw);
+                    el.textContent = `Último salvamento: ${new Date(meta.ts).toLocaleString()} (${meta.type})`;
+                    return;
+                } catch {}
+            }
+            el.textContent = 'Nenhum salvamento local encontrado';
+        }
+
+        function scheduleAutoSave(delay = 800) {
+            if (autoSaveTimer) clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(() => {
+                saveToStorage();
+            }, delay);
+        }
+
+        function renderDisciplines() {
+            const container = document.getElementById('disciplinesContainer');
+            container.innerHTML = '';
+
+            for (const [category, disciplines] of Object.entries(studyContent)) {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.style.marginBottom = '40px';
+                
+                const categoryTitle = document.createElement('h2');
+                categoryTitle.style.color = '#667eea';
+                categoryTitle.style.marginBottom = '20px';
+                categoryTitle.style.fontSize = '1.8em';
+                categoryTitle.textContent = category;
+                categoryDiv.appendChild(categoryTitle);
+
+                for (const [discipline, topics] of Object.entries(disciplines)) {
+                    const disciplineDiv = document.createElement('div');
+                    disciplineDiv.className = 'discipline';
+
+                    const header = document.createElement('div');
+                    header.className = 'discipline-header';
+                    header.onclick = () => toggleDiscipline(disciplineDiv);
+
+                    const titleDiv = document.createElement('div');
+                    titleDiv.className = 'discipline-title';
+                    titleDiv.innerHTML = `<span class="toggle-icon">▼</span> ${discipline}`;
+
+                    const progressDiv = document.createElement('div');
+                    progressDiv.className = 'discipline-progress';
+                    
+                    const miniProgress = document.createElement('div');
+                    miniProgress.className = 'mini-progress';
+                    const miniBar = document.createElement('div');
+                    miniBar.className = 'mini-progress-bar';
+                    miniBar.id = `mini-${category}-${discipline}`;
+                    miniProgress.appendChild(miniBar);
+                    
+                    const percentSpan = document.createElement('span');
+                    percentSpan.id = `percent-${category}-${discipline}`;
+                    percentSpan.textContent = '0%';
+                    percentSpan.style.fontWeight = 'bold';
+
+                    progressDiv.appendChild(miniProgress);
+                    progressDiv.appendChild(percentSpan);
+
+                    header.appendChild(titleDiv);
+                    header.appendChild(progressDiv);
+
+                    const content = document.createElement('div');
+                    content.className = 'discipline-content';
+
+                    topics.forEach(topic => {
+                        const topicDiv = document.createElement('div');
+                        topicDiv.className = 'topic';
+
+                        const nameDiv = document.createElement('div');
+                        nameDiv.className = 'topic-name';
+                        nameDiv.textContent = topic;
+
+                        const controlDiv = document.createElement('div');
+                        controlDiv.className = 'topic-control';
+
+                        const sliderContainer = document.createElement('div');
+                        sliderContainer.className = 'slider-container';
+
+                        const slider = document.createElement('input');
+                        slider.type = 'range';
+                        slider.min = '0';
+                        slider.max = '10';
+                        slider.value = progressData[`${category}|${discipline}|${topic}`] || 0;
+                        
+                        const valueDisplay = document.createElement('span');
+                        valueDisplay.className = 'value-display';
+                        valueDisplay.textContent = slider.value;
+
+                        slider.oninput = function() {
+                            valueDisplay.textContent = this.value;
+                            progressData[`${category}|${discipline}|${topic}`] = parseInt(this.value);
+                            updateProgress();
+                            scheduleAutoSave();
+                        };
+
+                        sliderContainer.appendChild(slider);
+                        sliderContainer.appendChild(valueDisplay);
+                        controlDiv.appendChild(sliderContainer);
+                        
+                        topicDiv.appendChild(nameDiv);
+                        topicDiv.appendChild(controlDiv);
+                        content.appendChild(topicDiv);
+                    });
+
+                    disciplineDiv.appendChild(header);
+                    disciplineDiv.appendChild(content);
+                    categoryDiv.appendChild(disciplineDiv);
+                }
+
+                container.appendChild(categoryDiv);
+            }
+
+            updateProgress();
+        }
+
+        function toggleDiscipline(disciplineDiv) {
+            const content = disciplineDiv.querySelector('.discipline-content');
+            const icon = disciplineDiv.querySelector('.toggle-icon');
+            content.classList.toggle('collapsed');
+            icon.classList.toggle('collapsed');
+        }
+
+        function updateProgress() {
+            let totalTopics = 0;
+            let totalScore = 0;
+            let completedTopics = 0;
+
+            // Atualizar progresso geral
+            for (const [key, value] of Object.entries(progressData)) {
+                totalTopics++;
+                totalScore += value;
+                if (value === 10) completedTopics++;
+            }
+
+            const totalPercent = totalTopics > 0 ? (totalScore / (totalTopics * 10) * 100).toFixed(1) : 0;
+            const averageScore = totalTopics > 0 ? (totalScore / totalTopics).toFixed(1) : 0;
+
+            document.getElementById('totalProgress').style.width = totalPercent + '%';
+            document.getElementById('totalProgress').textContent = totalPercent + '%';
+            document.getElementById('totalPercent').textContent = totalPercent + '%';
+            document.getElementById('totalTopics').textContent = totalTopics;
+            document.getElementById('completedTopics').textContent = completedTopics;
+            document.getElementById('averageScore').textContent = averageScore;
+
+            // Atualizar progresso por disciplina
+            for (const [category, disciplines] of Object.entries(studyContent)) {
+                for (const [discipline, topics] of Object.entries(disciplines)) {
+                    let disciplineScore = 0;
+                    topics.forEach(topic => {
+                        disciplineScore += progressData[`${category}|${discipline}|${topic}`] || 0;
+                    });
+                    const disciplinePercent = (disciplineScore / (topics.length * 10) * 100).toFixed(1);
+                    
+                    const miniBar = document.getElementById(`mini-${category}-${discipline}`);
+                    const percentSpan = document.getElementById(`percent-${category}-${discipline}`);
+                    
+                    if (miniBar) miniBar.style.width = disciplinePercent + '%';
+                    if (percentSpan) percentSpan.textContent = disciplinePercent + '%';
+                }
+            }
+        }
+
+        async function saveProgress() {
+            await saveToStorage();
+            alert('✅ Progresso salvo com sucesso!');
+        }
+
+        async function resetProgress() {
+            if (confirm('⚠️ Tem certeza que deseja resetar todo o progresso? Esta ação não pode ser desfeita.')) {
+                progressData = {};
+                for (const [category, disciplines] of Object.entries(studyContent)) {
+                    for (const [discipline, topics] of Object.entries(disciplines)) {
+                        topics.forEach(topic => {
+                            progressData[`${category}|${discipline}|${topic}`] = 0;
+                        });
+                    }
+                }
+                await clearStorage();
+                await saveToStorage();
+                renderDisciplines();
+                alert('🔄 Progresso resetado!');
+            }
+        }
+
+        function exportProgress() {
+            const dataStr = JSON.stringify(progressData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `progresso-estudos-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importProgress(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    try {
+                        const imported = JSON.parse(e.target.result);
+                        progressData = imported;
+                        await saveToStorage();
+                        renderDisciplines();
+                        alert('✅ Progresso importado com sucesso!');
+                    } catch (error) {
+                        alert('❌ Erro ao importar arquivo. Verifique se é um arquivo JSON válido.');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        // Inicializar ao carregar a página (carrega de storage antes de renderizar)
+        window.addEventListener('load', async () => {
+            await loadFromStorage();
+            renderDisciplines();
+            updateStatus();
+            // salva automaticamente ao sair
+            window.addEventListener('beforeunload', () => {
+                if (autoSaveTimer) clearTimeout(autoSaveTimer);
+                // If IndexedDB is not available, ensure data is persisted to localStorage synchronously
+                if (!idbAvailable()) saveToStorage();
+            });
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progresso de Estudos - Analista Legislativo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .progress-overview {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .progress-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .progress-card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .progress-bar-container {
+            background: #e9ecef;
+            border-radius: 50px;
+            height: 40px;
+            overflow: hidden;
+            position: relative;
+            margin: 15px 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            opacity: 0.9;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .discipline {
+            margin-bottom: 30px;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .discipline-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .discipline-header:hover {
+            opacity: 0.9;
+        }
+
+        .discipline-title {
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .discipline-progress {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .mini-progress {
+            width: 150px;
+            height: 20px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .mini-progress-bar {
+            height: 100%;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        .discipline-content {
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .discipline-content.collapsed {
+            display: none;
+        }
+
+        .topic {
+            background: white;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .topic-name {
+            flex: 1;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .topic-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="range"] {
+            width: 200px;
+            height: 8px;
+            border-radius: 5px;
+            background: #e9ecef;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+        }
+
+        .value-display {
+            min-width: 40px;
+            text-align: center;
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            padding: 30px;
+            justify-content: center;
+            background: #f8f9fa;
+            border-top: 2px solid #e9ecef;
+        }
+
+        button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-reset {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-export {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-import {
+            background: #ffc107;
+            color: #333;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        @media (max-width: 768px) {
+            .topic {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            input[type="range"] {
+                width: 100%;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Controle de Estudos - Analista Legislativo</h1>
+            <p>Analista de Ciência de Dados - ALEGO</p>
+        </div>
+
+        <div class="progress-overview">
+            <div class="progress-card">
+                <h2>Progresso Geral</h2>
+                <p id="saveStatus" style="margin-top:8px;color:#666;font-size:0.95em;">Nenhum salvamento local encontrado</p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="totalProgress">0%</div>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalPercent">0%</div>
+                        <div class="stat-label">Concluído</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalTopics">0</div>
+                        <div class="stat-label">Total de Tópicos</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="completedTopics">0</div>
+                        <div class="stat-label">Tópicos Completos (10/10)</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="averageScore">0.0</div>
+                        <div class="stat-label">Nota Média</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content" id="disciplinesContainer"></div>
+
+        <div class="buttons">
+            <button class="btn-save" onclick="saveProgress()">
+                <span class="emoji">💾</span>Salvar Progresso
+            </button>
+            <button class="btn-export" onclick="exportProgress()">
+                <span class="emoji">📥</span>Exportar JSON
+            </button>
+            <button class="btn-import" onclick="document.getElementById('importFile').click()">
+                <span class="emoji">📤</span>Importar JSON
+            </button>
+            <button class="btn-reset" onclick="resetProgress()">
+                <span class="emoji">🔄</span>Resetar Tudo
+            </button>
+            <input type="file" id="importFile" accept=".json" style="display:none" onchange="importProgress(event)">
+        </div>
+    </div>
+
+    <script>
+        const studyContent = {
+            "CONHECIMENTOS BÁSICOS": {
+                "LÍNGUA PORTUGUESA": [
+                    "Interpretação e Compreensão de texto",
+                    "Marcas de textualidade: coesão, coerência e intertextualidade",
+                    "Modos de organização discursiva",
+                    "Tipos textuais, características específicas",
+                    "Tipologia da frase portuguesa",
+                    "Estrutura da frase portuguesa",
+                    "Tipos de discurso",
+                    "Registros de linguagem. Funções da linguagem",
+                    "Elementos dos atos de comunicação",
+                    "Estrutura e formação de palavras",
+                    "Classes de palavras (aspectos morfológicos, sintáticos, semânticos)",
+                    "Semântica: sentido próprio e figurado",
+                    "Vocabulário: neologismos, arcaísmos, estrangeirismos",
+                    "Ortografia e acentuação gráfica, crase"
+                ],
+                "RACIOCÍNIO LÓGICO": [
+                    "Proposições lógicas e conectivos",
+                    "Equivalências lógicas",
+                    "Tabelas Verdade",
+                    "Argumentação Lógica",
+                    "Diagramas lógicos, tabelas e gráficos",
+                    "Sequências Lógicas",
+                    "Princípios de contagem e probabilidade"
+                ],
+                "NOÇÕES DE INFORMÁTICA": [
+                    "Arquivos digitais: padrões e características",
+                    "Arquivos PDF",
+                    "Sistema operacional Windows 10+",
+                    "MS Word 2010 BR ou superior",
+                    "Manipulação de arquivos no Word",
+                    "MS Excel 2010 BR ou superior",
+                    "Internet: conceitos e funcionamento",
+                    "Transferência de arquivos e dados",
+                    "Compartilhamento e armazenamento em nuvem"
+                ],
+                "REALIDADE DE GOIÁS": [
+                    "Formação territorial e povoamento",
+                    "Goiás no Império (1822-1889)",
+                    "Goiás na Primeira República (1889-1930)",
+                    "A mudança da capital e modernização (1930-1960)",
+                    "Goiás contemporâneo (1960-atualidade)",
+                    "Aspectos físicos e naturais",
+                    "Aspectos humanos e populacionais",
+                    "Aspectos econômicos",
+                    "Organização político-administrativa",
+                    "Questões contemporâneas"
+                ],
+                "LEGISLAÇÃO DO ESTADO DE GOIÁS": [
+                    "Resolução nº 1.073/2001 - Regulamento Administrativo ALEGO"
+                ]
+            },
+            "CONHECIMENTOS ESPECÍFICOS": {
+                "ANALISTA DE CIÊNCIA DE DADOS": [
+                    "Fundamentos de Ciência de Dados",
+                    "Classificação",
+                    "Coleta, tratamento, armazenamento de dados",
+                    "Regras de associação",
+                    "Modelagem relacional e multidimensional",
+                    "Aprendizagem de máquina: fundamentos",
+                    "Regressão linear",
+                    "Regressão logística",
+                    "Análise de agrupamentos (clusterização)",
+                    "Classificação (Machine Learning)",
+                    "Detecção de anomalias",
+                    "Modelagem preditiva",
+                    "Visão computacional",
+                    "Mineração de texto",
+                    "Redes neurais artificiais",
+                    "Deep learning",
+                    "Visualização e análise exploratória de dados",
+                    "Business intelligence",
+                    "Oracle BIEE",
+                    "Oracle Data Visualization",
+                    "QlikView",
+                    "PowerBI",
+                    "Processamento de Linguagem Natural",
+                    "Python: Fundamentos",
+                    "Python para Análise de Dados",
+                    "Desenvolvimento Web com Python",
+                    "Python para Machine Learning",
+                    "Inteligência Artificial"
+                ]
+            }
+        };
+
+        let progressData = {};
+
+        const STORAGE_KEY = 'studyProgress_v2';
+        const META_KEY = STORAGE_KEY + '_meta';
+        const DB_NAME = 'progressDB';
+        const STORE_NAME = 'progressStore';
+        let autoSaveTimer = null;
+
+        function idbAvailable() {
+            return !!window.indexedDB;
+        }
+
+        function idbOpen() {
+            return new Promise((resolve, reject) => {
+                const req = indexedDB.open(DB_NAME, 1);
+                req.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME);
+                    }
+                };
+                req.onsuccess = (e) => resolve(e.target.result);
+                req.onerror = (e) => reject(e.target.error);
+            });
+        }
+
+        async function idbSave(data) {
+            const db = await idbOpen();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                tx.objectStore(STORE_NAME).put(data, STORAGE_KEY);
+                tx.oncomplete = () => { db.close(); resolve(); };
+                tx.onerror = () => { db.close(); reject(tx.error); };
+            });
+        }
+
+        async function idbLoad() {
+            const db = await idbOpen();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readonly');
+                const req = tx.objectStore(STORE_NAME).get(STORAGE_KEY);
+                req.onsuccess = () => { db.close(); resolve(req.result); };
+                req.onerror = () => { db.close(); reject(req.error); };
+            });
+        }
+
+        async function idbClear() {
+            const db = await idbOpen();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                tx.objectStore(STORE_NAME).delete(STORAGE_KEY);
+                tx.oncomplete = () => { db.close(); resolve(); };
+                tx.onerror = () => { db.close(); reject(tx.error); };
+            });
+        }
+
+        async function saveToStorage() {
+            try {
+                if (idbAvailable()) {
+                    await idbSave(progressData);
+                    localStorage.setItem(META_KEY, JSON.stringify({ type: 'indexedDB', ts: new Date().toISOString() }));
+                } else {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(progressData));
+                    localStorage.setItem(META_KEY, JSON.stringify({ type: 'localStorage', ts: new Date().toISOString() }));
+                }
+                updateStatus();
+            } catch (err) {
+                console.error('saveToStorage error', err);
+            }
+        }
+
+        async function loadFromStorage() {
+            try {
+                if (idbAvailable()) {
+                    const loaded = await idbLoad();
+                    if (loaded) {
+                        progressData = loaded;
+                        return;
+                    }
+                }
+                const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('studyProgress');
+                if (raw) {
+                    progressData = JSON.parse(raw);
+                    return;
+                }
+
+                // Se não havia nada salvo, inicializa com zeros
+                for (const [category, disciplines] of Object.entries(studyContent)) {
+                    for (const [discipline, topics] of Object.entries(disciplines)) {
+                        topics.forEach(topic => {
+                            const key = `${category}|${discipline}|${topic}`;
+                            if (!(key in progressData)) progressData[key] = 0;
+                        });
+                    }
+                }
+            } catch (err) {
+                console.error('loadFromStorage error', err);
+            }
+        }
+
+        async function clearStorage() {
+            try {
+                if (idbAvailable()) await idbClear();
+                localStorage.removeItem(STORAGE_KEY);
+                localStorage.removeItem('studyProgress');
+                localStorage.removeItem(META_KEY);
+                updateStatus();
+            } catch (err) {
+                console.error('clearStorage error', err);
+            }
+        }
+
+        function updateStatus() {
+            const el = document.getElementById('saveStatus');
+            if (!el) return;
+            const metaRaw = localStorage.getItem(META_KEY);
+            if (metaRaw) {
+                try {
+                    const meta = JSON.parse(metaRaw);
+                    el.textContent = `Último salvamento: ${new Date(meta.ts).toLocaleString()} (${meta.type})`;
+                    return;
+                } catch {}
+            }
+            el.textContent = 'Nenhum salvamento local encontrado';
+        }
+
+        function scheduleAutoSave(delay = 800) {
+            if (autoSaveTimer) clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(() => {
+                saveToStorage();
+            }, delay);
+        }
+
+        function renderDisciplines() {
+            const container = document.getElementById('disciplinesContainer');
+            container.innerHTML = '';
+
+            for (const [category, disciplines] of Object.entries(studyContent)) {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.style.marginBottom = '40px';
+                
+                const categoryTitle = document.createElement('h2');
+                categoryTitle.style.color = '#667eea';
+                categoryTitle.style.marginBottom = '20px';
+                categoryTitle.style.fontSize = '1.8em';
+                categoryTitle.textContent = category;
+                categoryDiv.appendChild(categoryTitle);
+
+                for (const [discipline, topics] of Object.entries(disciplines)) {
+                    const disciplineDiv = document.createElement('div');
+                    disciplineDiv.className = 'discipline';
+
+                    const header = document.createElement('div');
+                    header.className = 'discipline-header';
+                    header.onclick = () => toggleDiscipline(disciplineDiv);
+
+                    const titleDiv = document.createElement('div');
+                    titleDiv.className = 'discipline-title';
+                    titleDiv.innerHTML = `<span class="toggle-icon">▼</span> ${discipline}`;
+
+                    const progressDiv = document.createElement('div');
+                    progressDiv.className = 'discipline-progress';
+                    
+                    const miniProgress = document.createElement('div');
+                    miniProgress.className = 'mini-progress';
+                    const miniBar = document.createElement('div');
+                    miniBar.className = 'mini-progress-bar';
+                    miniBar.id = `mini-${category}-${discipline}`;
+                    miniProgress.appendChild(miniBar);
+                    
+                    const percentSpan = document.createElement('span');
+                    percentSpan.id = `percent-${category}-${discipline}`;
+                    percentSpan.textContent = '0%';
+                    percentSpan.style.fontWeight = 'bold';
+
+                    progressDiv.appendChild(miniProgress);
+                    progressDiv.appendChild(percentSpan);
+
+                    header.appendChild(titleDiv);
+                    header.appendChild(progressDiv);
+
+                    const content = document.createElement('div');
+                    content.className = 'discipline-content';
+
+                    topics.forEach(topic => {
+                        const topicDiv = document.createElement('div');
+                        topicDiv.className = 'topic';
+
+                        const nameDiv = document.createElement('div');
+                        nameDiv.className = 'topic-name';
+                        nameDiv.textContent = topic;
+
+                        const controlDiv = document.createElement('div');
+                        controlDiv.className = 'topic-control';
+
+                        const sliderContainer = document.createElement('div');
+                        sliderContainer.className = 'slider-container';
+
+                        const slider = document.createElement('input');
+                        slider.type = 'range';
+                        slider.min = '0';
+                        slider.max = '10';
+                        slider.value = progressData[`${category}|${discipline}|${topic}`] || 0;
+                        
+                        const valueDisplay = document.createElement('span');
+                        valueDisplay.className = 'value-display';
+                        valueDisplay.textContent = slider.value;
+
+                        slider.oninput = function() {
+                            valueDisplay.textContent = this.value;
+                            progressData[`${category}|${discipline}|${topic}`] = parseInt(this.value);
+                            updateProgress();
+                            scheduleAutoSave();
+                        };
+
+                        sliderContainer.appendChild(slider);
+                        sliderContainer.appendChild(valueDisplay);
+                        controlDiv.appendChild(sliderContainer);
+                        
+                        topicDiv.appendChild(nameDiv);
+                        topicDiv.appendChild(controlDiv);
+                        content.appendChild(topicDiv);
+                    });
+
+                    disciplineDiv.appendChild(header);
+                    disciplineDiv.appendChild(content);
+                    categoryDiv.appendChild(disciplineDiv);
+                }
+
+                container.appendChild(categoryDiv);
+            }
+
+            updateProgress();
+        }
+
+        function toggleDiscipline(disciplineDiv) {
+            const content = disciplineDiv.querySelector('.discipline-content');
+            const icon = disciplineDiv.querySelector('.toggle-icon');
+            content.classList.toggle('collapsed');
+            icon.classList.toggle('collapsed');
+        }
+
+        function updateProgress() {
+            let totalTopics = 0;
+            let totalScore = 0;
+            let completedTopics = 0;
+
+            // Atualizar progresso geral
+            for (const [key, value] of Object.entries(progressData)) {
+                totalTopics++;
+                totalScore += value;
+                if (value === 10) completedTopics++;
+            }
+
+            const totalPercent = totalTopics > 0 ? (totalScore / (totalTopics * 10) * 100).toFixed(1) : 0;
+            const averageScore = totalTopics > 0 ? (totalScore / totalTopics).toFixed(1) : 0;
+
+            document.getElementById('totalProgress').style.width = totalPercent + '%';
+            document.getElementById('totalProgress').textContent = totalPercent + '%';
+            document.getElementById('totalPercent').textContent = totalPercent + '%';
+            document.getElementById('totalTopics').textContent = totalTopics;
+            document.getElementById('completedTopics').textContent = completedTopics;
+            document.getElementById('averageScore').textContent = averageScore;
+
+            // Atualizar progresso por disciplina
+            for (const [category, disciplines] of Object.entries(studyContent)) {
+                for (const [discipline, topics] of Object.entries(disciplines)) {
+                    let disciplineScore = 0;
+                    topics.forEach(topic => {
+                        disciplineScore += progressData[`${category}|${discipline}|${topic}`] || 0;
+                    });
+                    const disciplinePercent = (disciplineScore / (topics.length * 10) * 100).toFixed(1);
+                    
+                    const miniBar = document.getElementById(`mini-${category}-${discipline}`);
+                    const percentSpan = document.getElementById(`percent-${category}-${discipline}`);
+                    
+                    if (miniBar) miniBar.style.width = disciplinePercent + '%';
+                    if (percentSpan) percentSpan.textContent = disciplinePercent + '%';
+                }
+            }
+        }
+
+        async function saveProgress() {
+            await saveToStorage();
+            alert('✅ Progresso salvo com sucesso!');
+        }
+
+        async function resetProgress() {
+            if (confirm('⚠️ Tem certeza que deseja resetar todo o progresso? Esta ação não pode ser desfeita.')) {
+                progressData = {};
+                for (const [category, disciplines] of Object.entries(studyContent)) {
+                    for (const [discipline, topics] of Object.entries(disciplines)) {
+                        topics.forEach(topic => {
+                            progressData[`${category}|${discipline}|${topic}`] = 0;
+                        });
+                    }
+                }
+                await clearStorage();
+                await saveToStorage();
+                renderDisciplines();
+                alert('🔄 Progresso resetado!');
+            }
+        }
+
+        function exportProgress() {
+            const dataStr = JSON.stringify(progressData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `progresso-estudos-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importProgress(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    try {
+                        const imported = JSON.parse(e.target.result);
+                        progressData = imported;
+                        await saveToStorage();
+                        renderDisciplines();
+                        alert('✅ Progresso importado com sucesso!');
+                    } catch (error) {
+                        alert('❌ Erro ao importar arquivo. Verifique se é um arquivo JSON válido.');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        // Inicializar ao carregar a página (carrega de storage antes de renderizar)
+        window.addEventListener('load', async () => {
+            await loadFromStorage();
+            renderDisciplines();
+            updateStatus();
+            // salva automaticamente ao sair
+            window.addEventListener('beforeunload', () => {
+                if (autoSaveTimer) clearTimeout(autoSaveTimer);
+                // If IndexedDB is not available, ensure data is persisted to localStorage synchronously
+                if (!idbAvailable()) saveToStorage();
+            });
+        });
+    </script>
+</body>
+</html>
