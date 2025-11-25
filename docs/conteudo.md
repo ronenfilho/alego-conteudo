@@ -1,7 +1,6 @@
 # ANALISTA LEGISLATIVO - Analista de Ciência de Dados
 
-## ANALISTA LEGISLATIVO – PROVA OBJETIVA
-Conhecimentos básicos – 28 questões – 28 pontos:
+## CONHECIMENTOS BÁSICOS - 28
 
 ### LÍNGUA PORTUGUESA - 14
 1. Interpretação e Compreensão de texto. Organização estrutural dos textos. 
@@ -42,7 +41,7 @@ Crescimento urbano e formação de polos regionais. Cultura, identidade e desenv
 ### LEGISLAÇÃO DO ESTADO DE GOIÁS - 04
 1. Resolução nº 1.073, de 10 de outubro de 2001 (que dispõe sobre o Regulamento Administrativo da Assembleia Legislativa do Estado de Goiás). Todas as legislações estão disponíveis em: Portal da Alego – A Instituição – Legislação e Regimento.
 
-## CONHECIMENTOS ESPECÍFICOS 
+## CONHECIMENTOS ESPECÍFICOS
 Conhecimentos específicos – 42 questões – 42 pontos:
 
 ### DIREITO CONSTITUCIONAL - 06
