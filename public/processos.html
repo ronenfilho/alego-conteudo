@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processos Seletivos - Sistema de Estudos</title>
+    <link rel="stylesheet" href="css/processos.css">
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>📚 Processos Seletivos</h1>
+            <div class="user-info">
+                <span id="userName">Carregando...</span>
+                <button class="btn-logout" id="logoutBtn">Sair</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="actions-bar">
+            <button class="btn-primary" id="newProcessBtn">
+                <span>➕</span> Novo Processo Seletivo
+            </button>
+        </div>
+        
+        <div class="processos-grid" id="processosGrid">
+            <div class="loading-state">
+                <div class="spinner"></div>
+                <p>Carregando processos...</p>
+            </div>
+        </div>
+        
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">📋</div>
+            <h2>Nenhum processo cadastrado</h2>
+            <p>Clique no botão acima para criar seu primeiro processo seletivo</p>
+        </div>
+    </div>
+    
+    <!-- Modal para Criar/Editar Processo -->
+    <div class="modal" id="processModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Novo Processo Seletivo</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            
+            <form id="processForm">
+                <div class="form-group">
+                    <label for="processName">Nome do Processo *</label>
+                    <input type="text" id="processName" placeholder="Ex: Analista Legislativo - ALEGO" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="processDescription">Descrição</label>
+                    <textarea id="processDescription" rows="3" placeholder="Descrição opcional do processo seletivo"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="processContent">Conteúdo (Markdown) *</label>
+                    <textarea id="processContent" rows="15" placeholder="Digite o conteúdo em Markdown...
+
+# Exemplo de Markdown
+
+## Disciplinas
+- **Português**: 10 questões
+- **Raciocínio Lógico**: 5 questões
+
+## Cronograma
+1. Fase 1: Prova objetiva
+2. Fase 2: Prova discursiva" required></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="cancelBtn">Cancelar</button>
+                    <button type="submit" class="btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        
+        // Importar configuração
+        import { firebaseConfig } from './js/firebase-config.js';
+        
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        // Disponibilizar globalmente
+        window.firebaseApp = app;
+        window.firebaseAuth = auth;
+        window.firebaseDb = db;
+    </script>
+    <script src="js/processos.js" type="module"></script>
+</body>
+</html>
