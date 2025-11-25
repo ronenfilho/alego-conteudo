@@ -369,14 +369,39 @@
 
         // Função para carregar e parsear o conteudo.md
         async function loadStudyContent() {
+            const triedUrls = [];
             try {
-                const response = await fetch('conteudo.md');
-                const markdown = await response.text();
-                studyContent = parseMarkdownToContent(markdown);
+                // Resolve URL relative to current document to be robust on pages served under subpaths
+                const url = new URL('conteudo.md', window.location.href).toString();
+                triedUrls.push(url);
+                const response = await fetch(url, { cache: 'no-store' });
+                if (!response.ok) {
+                    console.warn('conteudo.md fetch returned non-ok status', response.status, response.statusText);
+                    throw new Error(`fetch status ${response.status}`);
+                }
+                const text = await response.text();
+
+                // If the server returned HTML (e.g. Jekyll converted the markdown to a page or a 404 HTML), show diagnostics
+                const head = text.trim().slice(0, 200).toLowerCase();
+                if (head.startsWith('<!doctype') || head.startsWith('<html') || head.includes('<meta name="generator"') ) {
+                    console.error('conteudo.md appears to be HTML; GitHub Pages may have processed the .md file.');
+                    console.debug('Fetched content snippet:', text.slice(0, 1000));
+                    alert('⚠️ O arquivo `conteudo.md` foi retornado como HTML (provavelmente o GitHub Pages processou o .md).\n\nSoluções:\n- Adicione um arquivo vazio `.nojekyll` na raiz do site (já adicionado no repositório).\n- Ou coloque o conteúdo em `conteudo.md` dentro da pasta `docs` e-force um novo deploy.');
+                    return {};
+                }
+
+                studyContent = parseMarkdownToContent(text);
+
+                // If parse produced nothing, show diagnostics to help debugging
+                if (!studyContent || Object.keys(studyContent).length === 0) {
+                    console.error('parseMarkdownToContent returned empty object. Fetched snippet:', text.slice(0, 1000));
+                    alert('⚠️ Não foi possível parsear o conteúdo de estudos. Verifique se `conteudo.md` está no formato esperado e foi publicado (sem processamento do Jekyll).');
+                }
+
                 return studyContent;
             } catch (error) {
-                console.error('Erro ao carregar conteudo.md:', error);
-                alert('❌ Erro ao carregar o arquivo de conteúdo. Verifique se o arquivo conteudo.md existe.');
+                console.error('Erro ao carregar ou parsear conteudo.md. Tried URLs:', triedUrls, error);
+                alert('❌ Erro ao carregar o arquivo de conteúdo. Verifique se o arquivo `conteudo.md` existe no site publicado e se não foi convertido para HTML pelo GitHub Pages.');
                 return {};
             }
         }
