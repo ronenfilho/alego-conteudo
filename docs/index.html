@@ -313,7 +313,7 @@
     <div class="container">
         <div class="header">
             <h1>📊 Controle de Estudos</h1>
-            <p id="pageTitle">ALEGO (FGV) Analista Legislativo - Analista de Ciência de Dados</p>
+            <p id="pageTitle">Abbla</p>
             <script>
                 (async () => {
                     try {
@@ -435,30 +435,58 @@
 
             for (let line of lines) {
                 line = line.trim();
-                
-                // Detectar categoria (## CONHECIMENTOS BÁSICOS - 28 ou ## CONHECIMENTOS ESPECÍFICOS)
-                if (line.startsWith('## CONHECIMENTOS')) {
-                    const categoryMatch = line.match(/^##\s+(.+?)(?:\s+-\s+(\d+))?$/);
-                    if (categoryMatch) {
-                        const baseName = categoryMatch[1].trim();
-                        currentCategoryFull = line.replace(/^##\s+/, '');
-                        currentCategory = baseName;
-                        if (!content[currentCategory]) {
-                            content[currentCategory] = {
-                                _fullTitle: currentCategoryFull,
-                                disciplines: {}
-                            };
-                        }
-                        currentDiscipline = null;
-                    }
+                if (!line) continue;
+
+                // Ignore headings other than ## / ### that we handle explicitly
+                if (line.startsWith('#') && !line.startsWith('## ') && !line.startsWith('### ')) {
+                    continue;
                 }
-                // Detectar disciplina (### LÍNGUA PORTUGUESA - 14)
-                else if (line.startsWith('### ') && currentCategory) {
-                    const disciplineMatch = line.match(/^###\s+(.+?)(?:\s+-\s+(\d+))?$/);
-                    if (disciplineMatch) {
-                        const baseName = disciplineMatch[1].trim();
-                        currentDisciplineFull = line.replace(/^###\s+/, '');
-                        currentDiscipline = baseName;
+
+                // Detectar categoria (## TÍTULO) - Aceita qualquer ## que não seja ###
+                if (line.startsWith('## ') && !line.startsWith('### ')) {
+                    const fullTitle = line.replace(/^##\s+/, '').trim();
+                    // Extrai nome base (sem a contagem) para usar como chave
+                    const match = fullTitle.match(/^(.+?)(?:\s+-\s+(\d+))?$/);
+                    const baseName = match ? match[1].trim() : fullTitle;
+
+                    currentCategoryFull = fullTitle;
+                    currentCategory = baseName;
+
+                    if (!content[currentCategory]) {
+                        content[currentCategory] = {
+                            _fullTitle: currentCategoryFull,
+                            disciplines: {}
+                        };
+                    }
+                    currentDiscipline = null;
+                    continue;
+                }
+
+                // Detectar disciplina (### TÍTULO)
+                if (line.startsWith('### ') && currentCategory) {
+                    const fullTitle = line.replace(/^###\s+/, '').trim();
+                    const match = fullTitle.match(/^(.+?)(?:\s+-\s+(\d+))?$/);
+                    const baseName = match ? match[1].trim() : fullTitle;
+
+                    currentDisciplineFull = fullTitle;
+                    currentDiscipline = baseName;
+
+                    if (!content[currentCategory].disciplines[currentDiscipline]) {
+                        content[currentCategory].disciplines[currentDiscipline] = {
+                            _fullTitle: currentDisciplineFull,
+                            topics: []
+                        };
+                    }
+                    continue;
+                }
+
+                // Qualquer outra linha não-heading dentro de uma categoria é considerada tópico
+                if (currentCategory) {
+                    // Se não houver disciplina atual, cria uma disciplina com o nome da categoria
+                    if (!currentDiscipline) {
+                        currentDiscipline = currentCategory;
+                        currentDisciplineFull = currentCategoryFull;
+
                         if (!content[currentCategory].disciplines[currentDiscipline]) {
                             content[currentCategory].disciplines[currentDiscipline] = {
                                 _fullTitle: currentDisciplineFull,
@@ -466,10 +494,13 @@
                             };
                         }
                     }
-                }
-                // Detectar tópicos (linhas começando com número.)
-                else if (/^\d+\./.test(line) && currentDiscipline && currentCategory) {
-                    content[currentCategory].disciplines[currentDiscipline].topics.push(line);
+
+                    // Normaliza bullets (remover '- ' ou '* ' no início), preserva números
+                    let topicLine = line.replace(/^[\-\*\u2022]\s+/, '').trim();
+                    // Se a linha for curta após limpeza, use a linha original para preservar números/formatos
+                    if (!topicLine) topicLine = line;
+
+                    content[currentCategory].disciplines[currentDiscipline].topics.push(topicLine);
                 }
             }
 

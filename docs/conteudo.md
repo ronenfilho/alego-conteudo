@@ -43,7 +43,7 @@ Crescimento urbano e formação de polos regionais. Cultura, identidade e desenv
 
 ## CONHECIMENTOS ESPECÍFICOS - 42
 
-### DIREITO CONSTITUCIONAL - 06
+### 2.1 - DIREITO CONSTITUCIONAL - 06
 1. Teoria Geral do Estado. Os poderes do Estado e as respectivas funções. 
 2. Constituição: 
 3. Emenda, reforma e revisão constitucional. Hierarquia das normas jurídicas. 
@@ -61,7 +61,7 @@ Crescimento urbano e formação de polos regionais. Cultura, identidade e desenv
 15. Meio Ambiente. 
 16. Família, da Criança, do Adolescente, do Jovem e do Idoso.
 
-### DIREITO ADMINISTRATIVO - 06
+### 2.2 - DIREITO ADMINISTRATIVO - 06
 1. Estado, governo e Administração Pública: Conceitos. Elementos. 
 2. Direito administrativo: Conceito. Objeto. Fontes. 
 3. Ato administrativo: Conceito, requisitos, atributos, classificação e espécies. Extinção do ato administrativo: cassação, anulação, revogação e convalidação. Decadência administrativa. 
@@ -84,7 +84,7 @@ Crescimento urbano e formação de polos regionais. Cultura, identidade e desenv
 20. Organizações Sociais (Lei nº 9.637/1998). 
 21. Organizações da Sociedade Civil de Interesse Público (Lei nº 9.790/1999).
 
-### ANALISTA DE CIÊNCIA DE DADOS - 30
+### 2.3 - ANALISTA DE CIÊNCIA DE DADOS - 30
 1. Fundamentos. 
 2. Classificação. 
 3. Coleta, tratamento, armazenamento, integração e recuperação de dados. 
@@ -108,3 +108,18 @@ Crescimento urbano e formação de polos regionais. Cultura, identidade e desenv
 21. Python: Fundamentos de Python, Python para Análise de Dados, Desenvolvimento Web com Python, Python para Machine Learning.
 22. Inteligência Artificial. 
 23. Aprendizagem de máquina: fundamentos, principais algoritmos e métricas de desempenho.
+
+## PROVA DISCURSIVA - 2
+### (duas) questões de conteúdos de conhecimento específico, 
+1. valendo 10 (dez) pontos cada
+
+
+## PROVA DISCURSIVA - 6
+### 2 (duas) questões de conteúdos de conhecimento específico, 
+3. valendo 10 (dez) pontos cada
+
+## outra... devamente 
+### ...
+* zzz
+1. a
+2. b
