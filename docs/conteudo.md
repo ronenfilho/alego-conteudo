@@ -43,6 +43,7 @@ Crescimento urbano e formação de polos regionais. Cultura, identidade e desenv
 1. Resolução nº 1.073, de 10 de outubro de 2001 (que dispõe sobre o Regulamento Administrativo da Assembleia Legislativa do Estado de Goiás). Todas as legislações estão disponíveis em: Portal da Alego – A Instituição – Legislação e Regimento.
 
 ## CONHECIMENTOS ESPECÍFICOS 
+Conhecimentos específicos – 42 questões – 42 pontos:
 
 ### DIREITO CONSTITUCIONAL - 06
 1. Teoria Geral do Estado. Os poderes do Estado e as respectivas funções. 
@@ -62,7 +63,7 @@ Crescimento urbano e formação de polos regionais. Cultura, identidade e desenv
 15. Meio Ambiente. 
 16. Família, da Criança, do Adolescente, do Jovem e do Idoso.
 
-### DIREITO ADMINISTRATIVO
+### DIREITO ADMINISTRATIVO - 06
 1. Estado, governo e Administração Pública: Conceitos. Elementos. 
 2. Direito administrativo: Conceito. Objeto. Fontes. 
 3. Ato administrativo: Conceito, requisitos, atributos, classificação e espécies. Extinção do ato administrativo: cassação, anulação, revogação e convalidação. Decadência administrativa. 
