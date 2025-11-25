@@ -312,8 +312,26 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>📊 Controle de Estudos - Analista Legislativo</h1>
-            <p>Analista de Ciência de Dados - ALEGO</p>
+            <h1>📊 Controle de Estudos</h1>
+            <p id="pageTitle">ALEGO (FGV) Analista Legislativo - Analista de Ciência de Dados</p>
+            <script>
+                (async () => {
+                    try {
+                        const url = new URL('conteudo.md', window.location.href).toString();
+                        const resp = await fetch(url, { cache: 'no-store' });
+                        if (!resp.ok) return;
+                        const text = await resp.text();
+                        const lines = text.split(/\r?\n/);
+                        // procura a primeira linha que começa com '#'
+                        const hLine = lines.find(l => l.trim().startsWith('#'));
+                        if (hLine) {
+                            document.getElementById('pageTitle').textContent = hLine.replace(/^#+\s*/, '').trim();
+                        }
+                    } catch (e) {
+                        console.warn('Não foi possível carregar título de conteudo.md', e);
+                    }
+                })();
+            </script>
         </div>
 
         <div class="progress-overview">

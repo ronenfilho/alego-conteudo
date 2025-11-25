@@ -1,4 +1,4 @@
-# ANALISTA LEGISLATIVO - Analista de Ciência de Dados
+# ALEGO (FGV) Analista Legislativo - Analista de Ciência de Dados
 
 ## CONHECIMENTOS BÁSICOS - 28
 
@@ -38,7 +38,7 @@ Crescimento urbano e formação de polos regionais. Cultura, identidade e desenv
 9. Organização político-administrativa: Divisão territorial e regiões geoeconômicas. Municípios e principais centros urbanos. Políticas de desenvolvimento regional. 
 10. Questões contemporâneas: Sustentabilidade e desafios ambientais. Desigualdades regionais e desenvolvimento sustentável. Urbanização acelerada e problemas sociais. 
 
-### LEGISLAÇÃO DO ESTADO DE GOIÁS - 04
+### 1.4 - LEGISLAÇÃO DO ESTADO DE GOIÁS - 04
 1. Resolução nº 1.073, de 10 de outubro de 2001 (que dispõe sobre o Regulamento Administrativo da Assembleia Legislativa do Estado de Goiás). Todas as legislações estão disponíveis em: Portal da Alego – A Instituição – Legislação e Regimento.
 
 ## CONHECIMENTOS ESPECÍFICOS - 42
