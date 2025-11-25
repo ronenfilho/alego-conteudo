@@ -11,12 +11,12 @@ cd /d "%~dp0"
 REM Verifica se Python está instalado
 python --version >nul 2>&1
 if errorlevel 1 (
-    echo [ERRO] Python não encontrado!
+    echo [AVISO] Python não encontrado. Tentando alternativa com PowerShell...
     echo.
-    echo Por favor, instale o Python em: https://www.python.org/downloads/
+    echo Iniciando servidor PowerShell embutido (não requer Python)...
     echo.
-    pause
-    exit /b 1
+    powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0start-server.ps1"
+    exit /b 0
 )
 
 echo Servidor iniciado com sucesso!
