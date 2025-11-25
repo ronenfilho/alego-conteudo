@@ -1,4 +1,5 @@
 # ALEGO (FGV) Analista Legislativo - Analista de Ciência de Dados
+CONTEÚDO PROGRAMÁTICO - página 43
 
 ## CONHECIMENTOS BÁSICOS - 28
 
@@ -11,7 +12,8 @@
 7. Tipos de discurso. 
 8. Registros de linguagem. Funções da linguagem. 
 9. Elementos dos atos de comunicação. 
-10. Estrutura e formação de palavras. Formas de abreviação. 11. Classes de palavras, aspectos morfológicos, sintáticos, semânticos e textuais de substantivos, adjetivos, artigos, numerais, pronomes, verbos, advérbios, conjunções e interjeições, modalizadores. 
+10. Estrutura e formação de palavras. Formas de abreviação. 
+11. Classes de palavras, aspectos morfológicos, sintáticos, semânticos e textuais de substantivos, adjetivos, artigos, numerais, pronomes, verbos, advérbios, conjunções e interjeições, modalizadores. 
 12. Semântica: sentido próprio e figurado; antônimos, sinônimos, parônimos e hiperônimos. Polissemia e ambiguidade. Os dicionários: tipos, organização de verbetes. 
 13. Vocabulário: neologismos, arcaísmos, estrangeirismos, latinismos. 
 14. Ortografia e acentuação gráfica, crase.
@@ -45,7 +47,7 @@ Crescimento urbano e formação de polos regionais. Cultura, identidade e desenv
 
 ### 2.1 - DIREITO CONSTITUCIONAL - 06
 1. Teoria Geral do Estado. Os poderes do Estado e as respectivas funções. 
-2. Constituição: 
+2. Constituição.
 3. Emenda, reforma e revisão constitucional. Hierarquia das normas jurídicas. 
 4. Dos princípios fundamentais da Constituição da República Federativa do Brasil. 
 5. Dos direitos e garantias fundamentais. 

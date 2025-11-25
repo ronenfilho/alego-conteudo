@@ -235,6 +235,7 @@ firebase open
 ## 🎯 Próximos Passos
 
 Possíveis melhorias:
+- 
 - [ ] Compartilhamento de processos entre usuários
 - [ ] Temas (modo escuro)
 - [ ] Gráficos de progresso

@@ -79,7 +79,8 @@
             transition: width 0.5s ease;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
+            padding-left: 15px;
             color: white;
             font-weight: bold;
             font-size: 1.1em;
@@ -120,6 +121,7 @@
             border: 2px solid #e9ecef;
             border-radius: 15px;
             overflow: hidden;
+            position: relative;
         }
 
         .discipline-header {
@@ -136,9 +138,25 @@
             opacity: 0.9;
         }
 
+        .discipline-title-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .discipline-title {
             font-size: 1.3em;
             font-weight: bold;
+        }
+
+        .discipline-toggle-icon {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .discipline-toggle-icon.collapsed {
+            transform: rotate(-90deg);
         }
 
         .discipline-progress {
@@ -365,6 +383,56 @@
             transform: rotate(-90deg);
         }
 
+        .category-container {
+            margin-bottom: 40px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .category-header:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+            transform: translateX(5px);
+        }
+
+        .category-title {
+            color: #667eea;
+            font-size: 1.8em;
+            font-weight: bold;
+            flex: 1;
+        }
+
+        .category-toggle {
+            font-size: 1.5em;
+            transition: transform 0.3s ease;
+            color: #667eea;
+        }
+
+        .category-toggle.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .category-content {
+            transition: all 0.4s ease;
+            overflow: hidden;
+            max-height: 5000px;
+        }
+
+        .category-content.collapsed {
+            max-height: 0 !important;
+            opacity: 0;
+            margin: 0;
+        }
+
         @media (max-width: 768px) {
             .topic {
                 flex-direction: column;
@@ -379,21 +447,36 @@
             .stats {
                 grid-template-columns: 1fr;
             }
+
+            .discipline-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .discipline-progress {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .mini-progress {
+                flex: 1;
+                min-width: 120px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
+        <div class="header" style="position: relative; padding-top: 60px;">
+            <button class="btn-back" id="backBtn" onclick="window.location.href='processos.html'" style="position: absolute; top: 15px; left: 20px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; z-index: 10;">← Voltar</button>
             <h1>📊 Controle de Estudos</h1>
             <p id="pageTitle">Carregando...</p>
-            <button class="btn-back" id="backBtn" onclick="window.location.href='processos.html'" style="position: absolute; top: 20px; left: 20px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer;">← Voltar</button>
         </div>
 
         <div class="progress-overview">
             <div class="progress-card">
-                <h2>Progresso Geral</h2>
-                <p id="saveStatus" style="margin-top:8px;color:#666;font-size:0.95em;">Nenhum salvamento local encontrado</p>
+                <h2>Progresso Geral</h2>                
                 <div class="progress-bar-container">
                     <div class="progress-bar" id="totalProgress">0%</div>
                 </div>
@@ -703,20 +786,42 @@
             }, delay);
         }
 
+        function toggleCategory(categoryContainer) {
+            const content = categoryContainer.querySelector('.category-content');
+            const icon = categoryContainer.querySelector('.category-toggle');
+            
+            content.classList.toggle('collapsed');
+            icon.classList.toggle('collapsed');
+        }
+
         function renderDisciplines() {
             const container = document.getElementById('disciplinesContainer');
             container.innerHTML = '';
 
             for (const [category, categoryData] of Object.entries(studyContent)) {
-                const categoryDiv = document.createElement('div');
-                categoryDiv.style.marginBottom = '40px';
+                const categoryContainer = document.createElement('div');
+                categoryContainer.className = 'category-container';
                 
-                const categoryTitle = document.createElement('h2');
-                categoryTitle.style.color = '#667eea';
-                categoryTitle.style.marginBottom = '20px';
-                categoryTitle.style.fontSize = '1.8em';
+                // Header da categoria com toggle
+                const categoryHeader = document.createElement('div');
+                categoryHeader.className = 'category-header';
+                categoryHeader.onclick = () => toggleCategory(categoryContainer);
+                
+                const categoryToggle = document.createElement('span');
+                categoryToggle.className = 'category-toggle collapsed';
+                categoryToggle.textContent = '▼';
+                
+                const categoryTitle = document.createElement('div');
+                categoryTitle.className = 'category-title';
                 categoryTitle.textContent = categoryData._fullTitle || category;
-                categoryDiv.appendChild(categoryTitle);
+                
+                categoryHeader.appendChild(categoryToggle);
+                categoryHeader.appendChild(categoryTitle);
+                categoryContainer.appendChild(categoryHeader);
+                
+                // Conteúdo da categoria (disciplinas) - iniciando fechado
+                const categoryContent = document.createElement('div');
+                categoryContent.className = 'category-content collapsed';
 
                 for (const [discipline, disciplineData] of Object.entries(categoryData.disciplines)) {
                     const topics = disciplineData.topics;
@@ -727,10 +832,22 @@
                     header.className = 'discipline-header';
                     header.onclick = () => toggleDiscipline(disciplineDiv);
 
+                    // Container do título com ícone
+                    const titleContainer = document.createElement('div');
+                    titleContainer.className = 'discipline-title-container';
+                    
+                    const toggleIcon = document.createElement('span');
+                    toggleIcon.className = 'discipline-toggle-icon collapsed';
+                    toggleIcon.textContent = '▼';
+                    
                     const titleDiv = document.createElement('div');
                     titleDiv.className = 'discipline-title';
-                    titleDiv.innerHTML = `<span class="toggle-icon collapsed">▼</span> ${disciplineData._fullTitle || discipline}`;
+                    titleDiv.textContent = disciplineData._fullTitle || discipline;
 
+                    titleContainer.appendChild(toggleIcon);
+                    titleContainer.appendChild(titleDiv);
+
+                    // Progresso no canto inferior direito
                     const progressDiv = document.createElement('div');
                     progressDiv.className = 'discipline-progress';
                     
@@ -749,7 +866,7 @@
                     progressDiv.appendChild(miniProgress);
                     progressDiv.appendChild(percentSpan);
 
-                    header.appendChild(titleDiv);
+                    header.appendChild(titleContainer);
                     header.appendChild(progressDiv);
 
                     const content = document.createElement('div');
@@ -797,10 +914,11 @@
 
                     disciplineDiv.appendChild(header);
                     disciplineDiv.appendChild(content);
-                    categoryDiv.appendChild(disciplineDiv);
+                    categoryContent.appendChild(disciplineDiv);
                 }
 
-                container.appendChild(categoryDiv);
+                categoryContainer.appendChild(categoryContent);
+                container.appendChild(categoryContainer);
             }
 
             updateProgress();
@@ -808,7 +926,7 @@
 
         function toggleDiscipline(disciplineDiv) {
             const content = disciplineDiv.querySelector('.discipline-content');
-            const icon = disciplineDiv.querySelector('.toggle-icon');
+            const icon = disciplineDiv.querySelector('.discipline-toggle-icon');
             content.classList.toggle('collapsed');
             icon.classList.toggle('collapsed');
         }
