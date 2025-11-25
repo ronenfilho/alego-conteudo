@@ -411,39 +411,47 @@
             const content = {};
             const lines = markdown.split('\n');
             let currentCategory = null;
+            let currentCategoryFull = null;
             let currentDiscipline = null;
+            let currentDisciplineFull = null;
 
             for (let line of lines) {
                 line = line.trim();
                 
                 // Detectar categoria (## CONHECIMENTOS BÁSICOS - 28 ou ## CONHECIMENTOS ESPECÍFICOS)
                 if (line.startsWith('## CONHECIMENTOS')) {
-                    const categoryMatch = line.match(/^##\s+(.+?)(?:\s+-\s+\d+)?$/);
+                    const categoryMatch = line.match(/^##\s+(.+?)(?:\s+-\s+(\d+))?$/);
                     if (categoryMatch) {
-                        currentCategory = categoryMatch[1].trim();
+                        const baseName = categoryMatch[1].trim();
+                        currentCategoryFull = line.replace(/^##\s+/, '');
+                        currentCategory = baseName;
                         if (!content[currentCategory]) {
-                            content[currentCategory] = {};
+                            content[currentCategory] = {
+                                _fullTitle: currentCategoryFull,
+                                disciplines: {}
+                            };
                         }
                         currentDiscipline = null;
                     }
                 }
                 // Detectar disciplina (### LÍNGUA PORTUGUESA - 14)
                 else if (line.startsWith('### ') && currentCategory) {
-                    const disciplineMatch = line.match(/^###\s+(.+?)(?:\s+-\s+\d+)?$/);
+                    const disciplineMatch = line.match(/^###\s+(.+?)(?:\s+-\s+(\d+))?$/);
                     if (disciplineMatch) {
-                        currentDiscipline = disciplineMatch[1].trim();
-                        if (!content[currentCategory][currentDiscipline]) {
-                            content[currentCategory][currentDiscipline] = [];
+                        const baseName = disciplineMatch[1].trim();
+                        currentDisciplineFull = line.replace(/^###\s+/, '');
+                        currentDiscipline = baseName;
+                        if (!content[currentCategory].disciplines[currentDiscipline]) {
+                            content[currentCategory].disciplines[currentDiscipline] = {
+                                _fullTitle: currentDisciplineFull,
+                                topics: []
+                            };
                         }
                     }
                 }
                 // Detectar tópicos (linhas começando com número.)
                 else if (/^\d+\./.test(line) && currentDiscipline && currentCategory) {
-                    const topicMatch = line.match(/^\d+\.\s+(.+)/);
-                    if (topicMatch) {
-                        const topic = topicMatch[1].trim();
-                        content[currentCategory][currentDiscipline].push(topic);
-                    }
+                    content[currentCategory].disciplines[currentDiscipline].topics.push(line);
                 }
             }
 
@@ -535,9 +543,9 @@
                 }
 
                 // Se não havia nada salvo, inicializa com zeros
-                for (const [category, disciplines] of Object.entries(studyContent)) {
-                    for (const [discipline, topics] of Object.entries(disciplines)) {
-                        topics.forEach(topic => {
+                for (const [category, categoryData] of Object.entries(studyContent)) {
+                    for (const [discipline, disciplineData] of Object.entries(categoryData.disciplines)) {
+                        disciplineData.topics.forEach(topic => {
                             const key = `${category}|${discipline}|${topic}`;
                             if (!(key in progressData)) progressData[key] = 0;
                         });
@@ -585,7 +593,7 @@
             const container = document.getElementById('disciplinesContainer');
             container.innerHTML = '';
 
-            for (const [category, disciplines] of Object.entries(studyContent)) {
+            for (const [category, categoryData] of Object.entries(studyContent)) {
                 const categoryDiv = document.createElement('div');
                 categoryDiv.style.marginBottom = '40px';
                 
@@ -593,10 +601,11 @@
                 categoryTitle.style.color = '#667eea';
                 categoryTitle.style.marginBottom = '20px';
                 categoryTitle.style.fontSize = '1.8em';
-                categoryTitle.textContent = category;
+                categoryTitle.textContent = categoryData._fullTitle || category;
                 categoryDiv.appendChild(categoryTitle);
 
-                for (const [discipline, topics] of Object.entries(disciplines)) {
+                for (const [discipline, disciplineData] of Object.entries(categoryData.disciplines)) {
+                    const topics = disciplineData.topics;
                     const disciplineDiv = document.createElement('div');
                     disciplineDiv.className = 'discipline';
 
@@ -606,7 +615,7 @@
 
                     const titleDiv = document.createElement('div');
                     titleDiv.className = 'discipline-title';
-                    titleDiv.innerHTML = `<span class="toggle-icon">▼</span> ${discipline}`;
+                    titleDiv.innerHTML = `<span class="toggle-icon collapsed">▼</span> ${disciplineData._fullTitle || discipline}`;
 
                     const progressDiv = document.createElement('div');
                     progressDiv.className = 'discipline-progress';
@@ -630,7 +639,7 @@
                     header.appendChild(progressDiv);
 
                     const content = document.createElement('div');
-                    content.className = 'discipline-content';
+                    content.className = 'discipline-content collapsed';
 
                     topics.forEach(topic => {
                         const topicDiv = document.createElement('div');
@@ -713,8 +722,9 @@
             document.getElementById('averageScore').textContent = averageScore;
 
             // Atualizar progresso por disciplina
-            for (const [category, disciplines] of Object.entries(studyContent)) {
-                for (const [discipline, topics] of Object.entries(disciplines)) {
+            for (const [category, categoryData] of Object.entries(studyContent)) {
+                for (const [discipline, disciplineData] of Object.entries(categoryData.disciplines)) {
+                    const topics = disciplineData.topics;
                     let disciplineScore = 0;
                     topics.forEach(topic => {
                         disciplineScore += progressData[`${category}|${discipline}|${topic}`] || 0;
@@ -738,9 +748,9 @@
         async function resetProgress() {
             if (confirm('⚠️ Tem certeza que deseja resetar todo o progresso? Esta ação não pode ser desfeita.')) {
                 progressData = {};
-                for (const [category, disciplines] of Object.entries(studyContent)) {
-                    for (const [discipline, topics] of Object.entries(disciplines)) {
-                        topics.forEach(topic => {
+                for (const [category, categoryData] of Object.entries(studyContent)) {
+                    for (const [discipline, disciplineData] of Object.entries(categoryData.disciplines)) {
+                        disciplineData.topics.forEach(topic => {
                             progressData[`${category}|${discipline}|${topic}`] = 0;
                         });
                     }

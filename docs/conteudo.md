@@ -2,7 +2,7 @@
 
 ## CONHECIMENTOS BÁSICOS - 28
 
-### LÍNGUA PORTUGUESA - 14
+### 1.1 - LÍNGUA PORTUGUESA - 14
 1. Interpretação e Compreensão de texto. Organização estrutural dos textos. 
 2. Marcas de textualidade: coesão, coerência e intertextualidade. 
 3. Modos de organização discursiva: descrição, narração, exposição, argumentação e injunção; características específicas de cada modo. 
@@ -16,7 +16,7 @@
 13. Vocabulário: neologismos, arcaísmos, estrangeirismos, latinismos. 
 14. Ortografia e acentuação gráfica, crase.
 
-### RACIOCÍNIO LÓGICO - 06
+### 1.2 - RACIOCÍNIO LÓGICO - 06
 1. Proposições lógicas: identificação de conectivos lógicos (e, ou, não), e análise de sua veracidade, negação, conjunção, disjunção, implicação, equivalência, proposições simples e compostas. 
 2. Equivalências lógicas.
 3. Tabelas Verdade: Construção de tabelas verdade para determinar a veracidade de proposições
@@ -26,7 +26,7 @@ compostas, utilizando os diferentes conectivos lógicos.
 6. Sequências Lógicas: Resolução de problemas envolvendo padrões numéricos, alfabéticos ou de figuras, identificando a lógica subjacente. 
 7. Princípios de contagem e noção de probabilidade.
 
-### REALIDADE ÉTNICA, SOCIAL, HISTÓRICA, GEOGRÁFICA, CULTURAL, POLÍTICA E ECONÔMICA DE GOIÁS - 04
+### 1.3 - REALIDADE ÉTNICA, SOCIAL, HISTÓRICA, GEOGRÁFICA, CULTURAL, POLÍTICA E ECONÔMICA DE GOIÁS - 04
 1. Formação territorial e povoamento: Povos indígenas e primeiras ocupações do território. Expedições bandeirantes e o ciclo do ouro. Formação das vilas e criação da Capitania de Goiás (1748). Estrutura administrativa e economia mineradora. 
 2. Goiás no Império (1822–1889): Goiás e o processo de Independência. Declínio da mineração e transição para a agropecuária. Estrutura social e política provincial. Escravidão e relações de trabalho. 
 3. Goiás na Primeira República (1889–1930): Elites agrárias e economia rural. Urbanização inicial e chegada das ferrovias. Repercussões da Revolução de 1930. 4. A mudança da capital e modernização (1930–1960): Governo de Pedro Ludovico Teixeira e construção de Goiânia. Marcha para o Oeste e integração nacional. Reorganização territorial e infraestrutura. 
@@ -41,8 +41,7 @@ Crescimento urbano e formação de polos regionais. Cultura, identidade e desenv
 ### LEGISLAÇÃO DO ESTADO DE GOIÁS - 04
 1. Resolução nº 1.073, de 10 de outubro de 2001 (que dispõe sobre o Regulamento Administrativo da Assembleia Legislativa do Estado de Goiás). Todas as legislações estão disponíveis em: Portal da Alego – A Instituição – Legislação e Regimento.
 
-## CONHECIMENTOS ESPECÍFICOS
-Conhecimentos específicos – 42 questões – 42 pontos:
+## CONHECIMENTOS ESPECÍFICOS - 42
 
 ### DIREITO CONSTITUCIONAL - 06
 1. Teoria Geral do Estado. Os poderes do Estado e as respectivas funções. 
