@@ -111,15 +111,4 @@ Crescimento urbano e formação de polos regionais. Cultura, identidade e desenv
 
 ## PROVA DISCURSIVA - 2
 ### (duas) questões de conteúdos de conhecimento específico, 
-1. valendo 10 (dez) pontos cada
-
-
-## PROVA DISCURSIVA - 6
-### 2 (duas) questões de conteúdos de conhecimento específico, 
-3. valendo 10 (dez) pontos cada
-
-## outra... devamente 
-### ...
-* zzz
-1. a
-2. b
+*. valendo 10 (dez) pontos cada
