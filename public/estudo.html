@@ -642,6 +642,7 @@
                 `2 - Google Docs\n` +
                 `3 - YouTube\n` +
                 `4 - ChatGPT\n` +
+                `5 - Gemini\n` +
                 `0 ou vazio - Outros (personalizado)`,
                 '1'
             );
@@ -674,6 +675,12 @@
                     name = prompt('📝 Nome da conversa:', 'ChatGPT');
                     if (!name || name.trim() === '') return;
                     url = prompt('🔗 Cole a URL do ChatGPT:', 'https://chat.openai.com/');
+                    break;
+                    
+                case '5': // Gemini
+                    name = prompt('📝 Nome da conversa:', 'Gemini');
+                    if (!name || name.trim() === '') return;
+                    url = prompt('🔗 Cole a URL do Gemini:', 'https://gemini.google.com/');
                     break;
                     
                 case '0':
