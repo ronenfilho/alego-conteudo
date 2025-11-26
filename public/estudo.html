@@ -88,6 +88,12 @@
         let getDoc = null;
         let doc = null;
         let serverTimestamp = null;
+        
+        // Estado de expansão/colapso (categorias e disciplinas)
+        let expansionState = {
+            categories: {},  // { 'categoria': true/false }
+            disciplines: {}  // { 'categoria|disciplina': true/false }
+        };
 
         // Função para carregar conteúdo do Firebase
         async function loadStudyContent() {
@@ -346,10 +352,15 @@
 
         function toggleCategory(categoryContainer) {
             const content = categoryContainer.querySelector('.category-content');
-            const icon = categoryContainer.querySelector('.category-toggle');
+            const toggle = categoryContainer.querySelector('.category-toggle');
+            const categoryTitle = categoryContainer.querySelector('.category-title').textContent;
             
             content.classList.toggle('collapsed');
-            icon.classList.toggle('collapsed');
+            toggle.classList.toggle('collapsed');
+            
+            // Salvar estado
+            expansionState.categories[categoryTitle] = !content.classList.contains('collapsed');
+            saveExpansionState();
         }
 
         function renderDisciplines() {
@@ -463,7 +474,6 @@
 
                         sliderContainer.appendChild(slider);
                         sliderContainer.appendChild(valueDisplay);
-                        controlDiv.appendChild(sliderContainer);
                         
                         // Botões de Notebook por tópico (múltiplos)
                         const topicKey = `${category}|${discipline}|${topic}`;
@@ -516,6 +526,9 @@
                         };
                         
                         notebookBtnsContainer.appendChild(addNotebookBtn);
+                        
+                        // Ordem: slider primeiro, botões depois
+                        controlDiv.appendChild(sliderContainer);
                         controlDiv.appendChild(notebookBtnsContainer);
                         
                         topicDiv.appendChild(nameDiv);
@@ -538,10 +551,81 @@
         function toggleDiscipline(disciplineDiv) {
             const content = disciplineDiv.querySelector('.discipline-content');
             const icon = disciplineDiv.querySelector('.discipline-toggle-icon');
+            const disciplineTitle = disciplineDiv.querySelector('.discipline-title').textContent;
+            
+            // Pegar categoria pai
+            const categoryContainer = disciplineDiv.closest('.category-container');
+            const categoryTitle = categoryContainer.querySelector('.category-title').textContent;
+            const disciplineKey = `${categoryTitle}|${disciplineTitle}`;
+            
             content.classList.toggle('collapsed');
             icon.classList.toggle('collapsed');
+            
+            // Salvar estado
+            expansionState.disciplines[disciplineKey] = !content.classList.contains('collapsed');
+            saveExpansionState();
         }
 
+        // Salvar estado de expansão no localStorage (rápido)
+        function saveExpansionState() {
+            if (!currentProcessId) return;
+            const key = `expansionState_${currentProcessId}`;
+            localStorage.setItem(key, JSON.stringify(expansionState));
+        }
+        
+        // Carregar estado de expansão do localStorage
+        function loadExpansionState() {
+            if (!currentProcessId) return;
+            const key = `expansionState_${currentProcessId}`;
+            const saved = localStorage.getItem(key);
+            if (saved) {
+                try {
+                    expansionState = JSON.parse(saved);
+                } catch (e) {
+                    console.error('Erro ao carregar estado de expansão:', e);
+                    expansionState = { categories: {}, disciplines: {} };
+                }
+            }
+        }
+        
+        // Aplicar estado de expansão após renderizar
+        function applyExpansionState() {
+            // Aplicar estado das categorias
+            document.querySelectorAll('.category-container').forEach(container => {
+                const categoryTitle = container.querySelector('.category-title').textContent;
+                const isExpanded = expansionState.categories[categoryTitle];
+                const content = container.querySelector('.category-content');
+                const toggle = container.querySelector('.category-toggle');
+                
+                if (isExpanded === true) {
+                    content.classList.remove('collapsed');
+                    toggle.classList.remove('collapsed');
+                } else if (isExpanded === false) {
+                    content.classList.add('collapsed');
+                    toggle.classList.add('collapsed');
+                }
+            });
+            
+            // Aplicar estado das disciplinas
+            document.querySelectorAll('.discipline').forEach(disciplineDiv => {
+                const disciplineTitle = disciplineDiv.querySelector('.discipline-title').textContent;
+                const categoryContainer = disciplineDiv.closest('.category-container');
+                const categoryTitle = categoryContainer.querySelector('.category-title').textContent;
+                const disciplineKey = `${categoryTitle}|${disciplineTitle}`;
+                const isExpanded = expansionState.disciplines[disciplineKey];
+                const content = disciplineDiv.querySelector('.discipline-content');
+                const icon = disciplineDiv.querySelector('.discipline-toggle-icon');
+                
+                if (isExpanded === true) {
+                    content.classList.remove('collapsed');
+                    icon.classList.remove('collapsed');
+                } else if (isExpanded === false) {
+                    content.classList.add('collapsed');
+                    icon.classList.add('collapsed');
+                }
+            });
+        }
+        
         // Armazenamento de notebooks por tópico (array de {name, url})
         let topicNotebooks = {};
 
@@ -809,8 +893,10 @@
                     await loadStudyContent();
                     
                     if (Object.keys(studyContent).length > 0) {
+                        loadExpansionState(); // Carregar estado salvo
                         await loadFromFirebase();
                         renderDisciplines();
+                        applyExpansionState(); // Aplicar estado após renderizar
                     } else {
                         alert('⚠️ Não foi possível carregar o conteúdo de estudos');
                     }
