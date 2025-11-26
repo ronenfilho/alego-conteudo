@@ -267,6 +267,9 @@
                     }
                 }
                 
+                // Carregar notebooks dos tópicos
+                await loadTopicNotebooks();
+                
                 updateSaveStatus('saved', 'Carregado do Firebase');
             } catch (error) {
                 console.error('Erro ao carregar do Firebase:', error);
@@ -448,27 +451,47 @@
                         sliderContainer.appendChild(valueDisplay);
                         controlDiv.appendChild(sliderContainer);
                         
+                        // Botões de Notebook por tópico
+                        const topicKey = `${category}|${discipline}|${topic}`;
+                        const notebookUrl = topicNotebooks[topicKey] || '';
+                        
+                        const notebookBtnsContainer = document.createElement('div');
+                        notebookBtnsContainer.className = 'topic-notebook-buttons';
+                        notebookBtnsContainer.style.display = 'flex';
+                        notebookBtnsContainer.style.gap = '8px';
+                        notebookBtnsContainer.style.marginTop = '8px';
+                        
+                        // Botão Adicionar/Editar Notebook
+                        const addNotebookBtn = document.createElement('button');
+                        addNotebookBtn.className = 'topic-notebook-btn topic-notebook-btn-add';
+                        addNotebookBtn.innerHTML = notebookUrl ? '<span>✏️</span><span>Editar</span>' : '<span>➕</span><span>Adicionar Notebook</span>';
+                        addNotebookBtn.title = 'Adicionar ou editar link do notebook/material';
+                        addNotebookBtn.onclick = (e) => {
+                            e.stopPropagation();
+                            addTopicNotebook(category, discipline, topic, topicKey);
+                        };
+                        
+                        notebookBtnsContainer.appendChild(addNotebookBtn);
+                        
+                        // Botão Visualizar (só aparece se tiver URL)
+                        if (notebookUrl) {
+                            const viewNotebookBtn = document.createElement('button');
+                            viewNotebookBtn.className = 'topic-notebook-btn topic-notebook-btn-view';
+                            viewNotebookBtn.innerHTML = '<span>📖</span><span>Visualizar</span>';
+                            viewNotebookBtn.title = 'Abrir notebook em nova aba';
+                            viewNotebookBtn.onclick = (e) => {
+                                e.stopPropagation();
+                                window.open(notebookUrl, '_blank', 'noopener,noreferrer');
+                            };
+                            notebookBtnsContainer.appendChild(viewNotebookBtn);
+                        }
+                        
+                        controlDiv.appendChild(notebookBtnsContainer);
+                        
                         topicDiv.appendChild(nameDiv);
                         topicDiv.appendChild(controlDiv);
                         content.appendChild(topicDiv);
                     });
-
-                    // Botão de material incorporado
-                    const embedBtnContainer = document.createElement('div');
-                    embedBtnContainer.style.padding = '15px 20px';
-                    embedBtnContainer.style.background = '#f8f9fa';
-                    embedBtnContainer.style.borderTop = '1px solid #e9ecef';
-                    
-                    const embedBtn = document.createElement('button');
-                    embedBtn.className = 'discipline-embed-btn';
-                    embedBtn.innerHTML = '<span>📚</span><span>Abrir Material Incorporado</span>';
-                    embedBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        openDisciplineEmbedded(category, discipline, disciplineData);
-                    };
-                    
-                    embedBtnContainer.appendChild(embedBtn);
-                    content.appendChild(embedBtnContainer);
 
                     disciplineDiv.appendChild(header);
                     disciplineDiv.appendChild(content);
@@ -489,53 +512,75 @@
             icon.classList.toggle('collapsed');
         }
 
-        // Configuração de URLs de material incorporado por disciplina
-        const disciplineEmbedConfig = {
-            'Língua Portuguesa': {
-                url: 'https://notebooklm.google.com/notebook/c5d7b567-acb0-43ca-80a0-51056e312d60?artifactId=73d5f19f-9345-4c71-b068-8ed60729d8d4',
-                icon: '📖',
-                title: 'Material de Língua Portuguesa',
-                type: 'notebook',
-                requiresAuth: false
-            },
-            'Raciocínio Lógico': {
-                url: 'https://colab.research.google.com/notebook/exemplo-logica',
-                icon: '🧮',
-                title: 'Exercícios de Raciocínio Lógico',
-                type: 'notebook',
-                requiresAuth: false
-            },
-            'Ciência de Dados': {
-                url: 'https://colab.research.google.com/notebook/exemplo-dados',
-                icon: '📊',
-                title: 'Notebooks de Ciência de Dados',
-                type: 'notebook',
-                requiresAuth: false
-            },
-            // Adicionar mais disciplinas conforme necessário
-        };
+        // Armazenamento de notebooks por tópico
+        let topicNotebooks = {};
 
-        function openDisciplineEmbedded(category, discipline, disciplineData) {
-            // Buscar configuração para a disciplina
-            const config = disciplineEmbedConfig[discipline] || {
-                url: 'https://notebooklm.google.com/notebook/c5d7b567-acb0-43ca-80a0-51056e312d60?artifactId=73d5f19f-9345-4c71-b068-8ed60729d8d4',
-                icon: '📚',
-                title: `Material de ${discipline}`,
-                type: 'notebook',
-                requiresAuth: false
-            };
-
-            // Adicionar informações da disciplina
-            config.discipline = discipline;
-            config.category = category;
-            config.fullTitle = disciplineData._fullTitle || discipline;
-
-            // Abrir modal
-            if (window.openEmbeddedMaterial) {
-                window.openEmbeddedMaterial(config);
+        // Função para adicionar/editar notebook de um tópico
+        async function addTopicNotebook(category, discipline, topic, topicKey) {
+            const currentUrl = topicNotebooks[topicKey] || '';
+            
+            const newUrl = prompt(
+                `🔗 Link do Notebook/Material para:\n${topic}\n\n` +
+                `Cole a URL do seu material:\n` +
+                `• NotebookLM (abre em nova aba)\n` +
+                `• Google Docs (publicado na web)\n` +
+                `• YouTube, PDF, ou qualquer link\n\n` +
+                `URL atual: ${currentUrl || '(nenhuma)'}`,
+                currentUrl
+            );
+            
+            if (newUrl === null) return; // Cancelou
+            
+            if (newUrl.trim() === '') {
+                // Remover notebook
+                if (confirm('❌ Remover o link deste tópico?')) {
+                    delete topicNotebooks[topicKey];
+                    await saveTopicNotebooks();
+                    renderDisciplines();
+                }
             } else {
-                console.error('EmbedModal não está carregado');
-                alert('Erro ao carregar o modal. Recarregue a página.');
+                // Adicionar/atualizar notebook
+                topicNotebooks[topicKey] = newUrl.trim();
+                await saveTopicNotebooks();
+                renderDisciplines();
+            }
+        }
+
+        // Salvar notebooks no Firestore
+        async function saveTopicNotebooks() {
+            if (!currentProcesso) return;
+            
+            try {
+                const progressId = `${auth.currentUser.uid}_${currentProcesso.id}`;
+                await setDoc(doc(db, 'progress', progressId), {
+                    userId: auth.currentUser.uid,
+                    processoId: currentProcesso.id,
+                    progressData: progressData,
+                    topicNotebooks: topicNotebooks,
+                    lastUpdated: serverTimestamp()
+                }, { merge: true });
+                
+                console.log('Notebooks salvos com sucesso!');
+            } catch (error) {
+                console.error('Erro ao salvar notebooks:', error);
+                alert('Erro ao salvar. Verifique sua conexão.');
+            }
+        }
+
+        // Carregar notebooks do Firestore
+        async function loadTopicNotebooks() {
+            if (!currentProcesso || !auth.currentUser) return;
+            
+            try {
+                const progressId = `${auth.currentUser.uid}_${currentProcesso.id}`;
+                const docSnap = await getDoc(doc(db, 'progress', progressId));
+                
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    topicNotebooks = data.topicNotebooks || {};
+                }
+            } catch (error) {
+                console.error('Erro ao carregar notebooks:', error);
             }
         }
 

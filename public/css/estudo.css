@@ -426,6 +426,54 @@ input[type="range"]::-moz-range-thumb {
     margin: 0;
 }
 
+/* Botões de Notebook por Tópico */
+.topic-notebook-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.topic-notebook-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.topic-notebook-btn-add {
+    background: #e3f2fd;
+    color: #1976d2;
+    border: 1px solid #bbdefb;
+}
+
+.topic-notebook-btn-add:hover {
+    background: #bbdefb;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(25, 118, 210, 0.2);
+}
+
+.topic-notebook-btn-view {
+    background: #667eea;
+    color: white;
+}
+
+.topic-notebook-btn-view:hover {
+    background: #764ba2;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+}
+
+.topic-notebook-btn span:first-child {
+    font-size: 1.1em;
+}
+
 @media (max-width: 768px) {
     .topic {
         flex-direction: column;
@@ -445,6 +493,16 @@ input[type="range"]::-moz-range-thumb {
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
+    }
+    
+    .topic-notebook-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .topic-notebook-btn {
+        width: 100%;
+        justify-content: center;
     }
 
     .discipline-progress {

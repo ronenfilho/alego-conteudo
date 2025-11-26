@@ -129,8 +129,8 @@ class EmbedModal {
         window.addEventListener('message', (event) => {
             // Validar origem (adicionar suas origens permitidas)
             const allowedOrigins = [
-                'https://notebooklm.google.com',
                 'https://colab.research.google.com',
+                'https://www.youtube.com',
                 window.location.origin
             ];
             
@@ -239,7 +239,24 @@ class EmbedModal {
             
             // Aguardar carregamento
             this.iframe.onload = () => {
-                this.onIframeLoad();
+                // Verificar se iframe carregou com erro (403, X-Frame-Options, etc)
+                setTimeout(() => {
+                    try {
+                        // Tentar acessar o conteúdo do iframe
+                        const iframeDoc = this.iframe.contentDocument || this.iframe.contentWindow.document;
+                        if (!iframeDoc || iframeDoc.body.innerHTML.includes('403') || iframeDoc.body.innerHTML.includes('Este é um erro')) {
+                            this.showFallback('embed_403',
+                                'Acesso Negado (403)',
+                                'Este site não permite ser incorporado. Alguns serviços como o NotebookLM do Google bloqueiam a exibição em iframe por segurança. Clique no botão abaixo para abrir em uma nova aba.'
+                            );
+                            return;
+                        }
+                    } catch (e) {
+                        // Se der erro ao acessar, provavelmente é X-Frame-Options
+                        // Não fazer nada, iframe pode estar carregando normalmente
+                    }
+                    this.onIframeLoad();
+                }, 500);
             };
             
             this.iframe.onerror = () => {
@@ -289,13 +306,14 @@ class EmbedModal {
         // Verificar se a URL permite embedding
         // Em produção, fazer isso no backend
         try {
+            // IMPORTANTE: NotebookLM NÃO permite embed (retorna 403)
             // Verificar origens conhecidas que permitem embed
             const embedFriendlyDomains = [
-                'notebooklm.google.com',
                 'colab.research.google.com',
                 'youtube.com',
                 'youtu.be',
-                'vimeo.com'
+                'vimeo.com',
+                'docs.google.com'
             ];
             
             const urlObj = new URL(url);
