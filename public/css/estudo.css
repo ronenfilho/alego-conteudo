@@ -200,14 +200,13 @@ body {
 }
 
 .topic-name {
-    min-width: 200px !important;
-    max-width: 300px !important;
+    min-width: 250px;
+    max-width: 400px;
+    flex: 0 1 400px;
     font-weight: 500;
     color: #333;
     font-size: 0.9em;
     line-height: 1.4;
-    flex-shrink: 0;
-    background-color: yellow; /* DEBUG */
 }
 
 .topic-control {
@@ -215,8 +214,8 @@ body {
     flex-direction: column;
     align-items: flex-end;
     gap: 6px;
-    flex: 1;
-    min-width: 0;
+    flex: 1 1 auto;
+    min-width: 300px;
 }
 
 .slider-container {
@@ -458,9 +457,9 @@ input[type="range"]::-moz-range-thumb {
     display: flex;
     gap: 5px;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     width: 100%;
-    max-width: 400px;
+    max-width: 600px;
     justify-content: flex-end;
 }
 
@@ -548,9 +547,10 @@ input[type="range"]::-moz-range-thumb {
     }
     
     .topic-name {
-        min-width: 200px;
+        min-width: unset;
         max-width: 100%;
         width: 100%;
+        flex: 1;
         font-size: 0.85em;
     }
     
@@ -558,6 +558,12 @@ input[type="range"]::-moz-range-thumb {
         flex-direction: column;
         align-items: stretch;
         gap: 8px;
+        min-width: unset;
+    }
+    
+    .topic-notebook-buttons {
+        flex-wrap: wrap;
+        justify-content: flex-start;
     }
     
     .slider-container {
