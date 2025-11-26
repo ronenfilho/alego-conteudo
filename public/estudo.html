@@ -572,6 +572,7 @@
             if (!currentProcessId) return;
             const key = `expansionState_${currentProcessId}`;
             localStorage.setItem(key, JSON.stringify(expansionState));
+            console.log('✅ Estado salvo:', expansionState);
         }
         
         // Carregar estado de expansão do localStorage
@@ -591,6 +592,7 @@
         
         // Aplicar estado de expansão após renderizar
         function applyExpansionState() {
+            console.log('🔄 Aplicando estado de expansão:', expansionState);
             // Aplicar estado das categorias
             document.querySelectorAll('.category-container').forEach(container => {
                 const categoryTitle = container.querySelector('.category-title').textContent;
@@ -664,6 +666,7 @@
             
             await saveTopicNotebooks();
             renderDisciplines();
+            console.log('📖 Notebook adicionado, restaurando estado...');
             applyExpansionState(); // Restaurar estado após renderizar
         }
         
@@ -692,6 +695,7 @@
                         };
                         await saveTopicNotebooks();
                         renderDisciplines();
+                        console.log('✏️ Notebook editado, restaurando estado...');
                         applyExpansionState(); // Restaurar estado
                     }
                 }
@@ -704,6 +708,7 @@
                     }
                     await saveTopicNotebooks();
                     renderDisciplines();
+                    console.log('🗑️ Notebook removido, restaurando estado...');
                     applyExpansionState(); // Restaurar estado
                 }
             }
