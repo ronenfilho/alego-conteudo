@@ -200,9 +200,8 @@ body {
 }
 
 .topic-name {
-    min-width: 250px;
-    max-width: 400px;
-    flex: 0 1 400px;
+    flex: 1 1 auto;
+    min-width: 200px;
     font-weight: 500;
     color: #333;
     font-size: 0.9em;
@@ -214,8 +213,8 @@ body {
     flex-direction: column;
     align-items: flex-end;
     gap: 6px;
-    flex: 1 1 auto;
-    min-width: 300px;
+    flex: 0 0 auto;
+    min-width: 0;
 }
 
 .slider-container {
@@ -455,12 +454,10 @@ input[type="range"]::-moz-range-thumb {
 /* Botões de Notebook por Tópico - Layout Inline */
 .topic-notebook-buttons {
     display: flex;
+    flex-direction: column;
     gap: 5px;
-    align-items: center;
-    flex-wrap: nowrap;
-    width: 100%;
-    max-width: 600px;
-    justify-content: flex-end;
+    align-items: flex-end;
+    width: auto;
 }
 
 .notebook-btn-wrapper {
