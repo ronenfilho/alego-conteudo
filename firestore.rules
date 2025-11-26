@@ -44,6 +44,25 @@ service cloud.firestore {
       allow delete: if isAuthenticated() && progressId.matches('^' + request.auth.uid + '_.*');
     }
     
+    // Regras para a coleção de configurações de embed
+    match /embedConfigs/{disciplina} {
+      // Permitir leitura para todos os usuários autenticados
+      allow read: if isAuthenticated();
+      
+      // Permitir escrita apenas para admins (você pode adicionar lógica de admin)
+      // Por enquanto, apenas usuários específicos ou adicionar campo isAdmin
+      allow write: if false; // Desabilitado - gerenciar via console do Firebase ou Cloud Functions
+    }
+    
+    // Regras para logs de analytics de embed
+    match /embedAnalytics/{analyticsId} {
+      // Permitir apenas criação (append-only) para usuários autenticados
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      
+      // Não permitir leitura, update ou delete por usuários comuns
+      allow read, update, delete: if false;
+    }
+    
     // Regra padrão: negar acesso a qualquer outra coleção não especificada
     match /{document=**} {
       allow read, write: if false;

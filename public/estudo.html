@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abbla - Progresso de Estudos</title>
     <link rel="stylesheet" href="css/estudo.css">
+    <link rel="stylesheet" href="css/embed-modal.css">
 </head>
 <body>
     <div class="container">
@@ -452,6 +453,22 @@
                         content.appendChild(topicDiv);
                     });
 
+                    // Botão de material incorporado
+                    const embedBtnContainer = document.createElement('div');
+                    embedBtnContainer.style.padding = '15px 20px';
+                    embedBtnContainer.style.background = '#f8f9fa';
+                    
+                    const embedBtn = document.createElement('button');
+                    embedBtn.className = 'discipline-embed-btn';
+                    embedBtn.innerHTML = '<span>📚</span><span>Notebook</span>';
+                    embedBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        openDisciplineEmbedded(category, discipline, disciplineData);
+                    };
+                    
+                    embedBtnContainer.appendChild(embedBtn);
+                    content.appendChild(embedBtnContainer);
+
                     disciplineDiv.appendChild(header);
                     disciplineDiv.appendChild(content);
                     categoryContent.appendChild(disciplineDiv);
@@ -469,6 +486,56 @@
             const icon = disciplineDiv.querySelector('.discipline-toggle-icon');
             content.classList.toggle('collapsed');
             icon.classList.toggle('collapsed');
+        }
+
+        // Configuração de URLs de material incorporado por disciplina
+        const disciplineEmbedConfig = {
+            'Língua Portuguesa': {
+                url: 'https://notebooklm.google.com/notebook/c5d7b567-acb0-43ca-80a0-51056e312d60?artifactId=73d5f19f-9345-4c71-b068-8ed60729d8d4',
+                icon: '📖',
+                title: 'Material de Língua Portuguesa',
+                type: 'notebook',
+                requiresAuth: false
+            },
+            'Raciocínio Lógico': {
+                url: 'https://colab.research.google.com/notebook/exemplo-logica',
+                icon: '🧮',
+                title: 'Exercícios de Raciocínio Lógico',
+                type: 'notebook',
+                requiresAuth: false
+            },
+            'Ciência de Dados': {
+                url: 'https://colab.research.google.com/notebook/exemplo-dados',
+                icon: '📊',
+                title: 'Notebooks de Ciência de Dados',
+                type: 'notebook',
+                requiresAuth: false
+            },
+            // Adicionar mais disciplinas conforme necessário
+        };
+
+        function openDisciplineEmbedded(category, discipline, disciplineData) {
+            // Buscar configuração para a disciplina
+            const config = disciplineEmbedConfig[discipline] || {
+                url: 'https://notebooklm.google.com/notebook/c5d7b567-acb0-43ca-80a0-51056e312d60?artifactId=73d5f19f-9345-4c71-b068-8ed60729d8d4',
+                icon: '📚',
+                title: `Material de ${discipline}`,
+                type: 'notebook',
+                requiresAuth: false
+            };
+
+            // Adicionar informações da disciplina
+            config.discipline = discipline;
+            config.category = category;
+            config.fullTitle = disciplineData._fullTitle || discipline;
+
+            // Abrir modal
+            if (window.openEmbeddedMaterial) {
+                window.openEmbeddedMaterial(config);
+            } else {
+                console.error('EmbedModal não está carregado');
+                alert('Erro ao carregar o modal. Recarregue a página.');
+            }
         }
 
         function updateProgress() {
@@ -617,6 +684,13 @@
                     navigator.sendBeacon && saveToFirebase();
                 }
             }
+        });
+    </script>
+    <script src="js/embed-modal.js"></script>
+    <script>
+        // Inicializar EmbedModal quando a página carregar
+        window.addEventListener('load', () => {
+            initEmbedModal();
         });
     </script>
 </body>
