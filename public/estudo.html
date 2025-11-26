@@ -641,12 +641,12 @@
                 `1 - NotebookLM (Google)\n` +
                 `2 - Google Docs\n` +
                 `3 - YouTube\n` +
-                `4 - PDF/Link personalizado\n` +
-                `5 - ChatGPT`,
+                `4 - ChatGPT\n` +
+                `0 ou vazio - Outros (personalizado)`,
                 '1'
             );
             
-            if (!tipo) return; // Cancelou
+            if (tipo === null) return; // Cancelou
             
             let name = '';
             let url = '';
@@ -670,16 +670,17 @@
                     url = prompt('🔗 Cole a URL do YouTube:', 'https://youtube.com/');
                     break;
                     
-                case '4': // Personalizado
-                    name = prompt('📝 Nome do material:', '');
-                    if (!name || name.trim() === '') return;
-                    url = prompt('🔗 Cole a URL:', '');
-                    break;
-                    
-                case '5': // ChatGPT
+                case '4': // ChatGPT
                     name = prompt('📝 Nome da conversa:', 'ChatGPT');
                     if (!name || name.trim() === '') return;
                     url = prompt('🔗 Cole a URL do ChatGPT:', 'https://chat.openai.com/');
+                    break;
+                    
+                case '0':
+                case '': // Personalizado
+                    name = prompt('📝 Nome do material:', '');
+                    if (!name || name.trim() === '') return;
+                    url = prompt('🔗 Cole a URL:', '');
                     break;
                     
                 default:
