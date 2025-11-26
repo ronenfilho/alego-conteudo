@@ -474,6 +474,9 @@
                         
                         // Renderizar botões existentes
                         notebooks.forEach((notebook, index) => {
+                            const notebookWrapper = document.createElement('div');
+                            notebookWrapper.className = 'notebook-btn-wrapper';
+                            
                             const viewNotebookBtn = document.createElement('button');
                             viewNotebookBtn.className = 'topic-notebook-btn topic-notebook-btn-view';
                             viewNotebookBtn.innerHTML = `<span>📖</span><span>${notebook.name}</span>`;
@@ -486,7 +489,20 @@
                                 e.preventDefault();
                                 editNotebook(topicKey, index);
                             };
-                            notebookBtnsContainer.appendChild(viewNotebookBtn);
+                            
+                            // Botão de opções (mobile-friendly)
+                            const optionsBtn = document.createElement('button');
+                            optionsBtn.className = 'topic-notebook-btn-options';
+                            optionsBtn.innerHTML = '⋮';
+                            optionsBtn.title = 'Editar ou remover';
+                            optionsBtn.onclick = (e) => {
+                                e.stopPropagation();
+                                editNotebook(topicKey, index);
+                            };
+                            
+                            notebookWrapper.appendChild(viewNotebookBtn);
+                            notebookWrapper.appendChild(optionsBtn);
+                            notebookBtnsContainer.appendChild(notebookWrapper);
                         });
                         
                         // Botão Adicionar Notebook
