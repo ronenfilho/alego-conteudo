@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abbla - Progresso de Estudos</title>
-    <link rel="stylesheet" href="css/estudo.css">
+    <link rel="stylesheet" href="css/estudo.css?v=20251126-2">
     <link rel="stylesheet" href="css/embed-modal.css">
 </head>
 <body>
@@ -447,6 +447,8 @@
 
                         const nameDiv = document.createElement('div');
                         nameDiv.className = 'topic-name';
+                        nameDiv.style.minWidth = '200px';
+                        nameDiv.style.maxWidth = '300px';
                         nameDiv.textContent = topic;
 
                         const controlDiv = document.createElement('div');
