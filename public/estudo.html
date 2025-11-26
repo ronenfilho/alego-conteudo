@@ -449,7 +449,10 @@
                         nameDiv.className = 'topic-name';
                         nameDiv.style.minWidth = '200px';
                         nameDiv.style.maxWidth = '300px';
+                        nameDiv.style.backgroundColor = '#f0f8ff'; // DEBUG: fundo azul claro
+                        nameDiv.style.border = '2px solid red'; // DEBUG: borda vermelha
                         nameDiv.textContent = topic;
+                        console.log('Topic name criado:', topic, 'minWidth:', nameDiv.style.minWidth);
 
                         const controlDiv = document.createElement('div');
                         controlDiv.className = 'topic-control';

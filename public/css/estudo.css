@@ -200,13 +200,14 @@ body {
 }
 
 .topic-name {
-    min-width: 200px;
-    max-width: 300px;
+    min-width: 200px !important;
+    max-width: 300px !important;
     font-weight: 500;
     color: #333;
     font-size: 0.9em;
     line-height: 1.4;
     flex-shrink: 0;
+    background-color: yellow; /* DEBUG */
 }
 
 .topic-control {
