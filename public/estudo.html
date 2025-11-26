@@ -457,10 +457,11 @@
                     const embedBtnContainer = document.createElement('div');
                     embedBtnContainer.style.padding = '15px 20px';
                     embedBtnContainer.style.background = '#f8f9fa';
+                    embedBtnContainer.style.borderTop = '1px solid #e9ecef';
                     
                     const embedBtn = document.createElement('button');
                     embedBtn.className = 'discipline-embed-btn';
-                    embedBtn.innerHTML = '<span>📚</span><span>Notebook</span>';
+                    embedBtn.innerHTML = '<span>📚</span><span>Abrir Material Incorporado</span>';
                     embedBtn.onclick = (e) => {
                         e.stopPropagation();
                         openDisciplineEmbedded(category, discipline, disciplineData);
