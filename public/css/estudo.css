@@ -199,8 +199,8 @@ body {
 }
 
 .topic-name {
-    min-width: 140px;
-    max-width: 180px;
+    min-width: 200px;
+    max-width: 300px;
     font-weight: 500;
     color: #333;
     font-size: 0.9em;
@@ -212,7 +212,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 8px;
+    gap: 6px;
     flex: 1;
     min-width: 0;
 }
@@ -220,16 +220,16 @@ body {
 .slider-container {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     width: 100%;
-    max-width: 300px;
+    max-width: 250px;
     justify-content: flex-end;
 }
 
 input[type="range"] {
     flex: 1;
-    min-width: 120px;
-    max-width: 200px;
+    min-width: 100px;
+    max-width: 160px;
     height: 6px;
     border-radius: 3px;
     background: #e9ecef;
@@ -454,11 +454,11 @@ input[type="range"]::-moz-range-thumb {
 /* Botões de Notebook por Tópico - Layout Inline */
 .topic-notebook-buttons {
     display: flex;
-    gap: 6px;
+    gap: 5px;
     align-items: center;
     flex-wrap: wrap;
     width: 100%;
-    max-width: 500px;
+    max-width: 400px;
     justify-content: flex-end;
 }
 
@@ -466,6 +466,7 @@ input[type="range"]::-moz-range-thumb {
     display: flex;
     gap: 2px;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .topic-notebook-btn {
@@ -508,8 +509,9 @@ input[type="range"]::-moz-range-thumb {
     background: #f0f0f0;
     color: #1976d2;
     border: 1px dashed #ccc;
-    padding: 4px 8px;
-    min-width: 30px;
+    padding: 3px 6px;
+    min-width: 26px;
+    font-size: 0.9em;
 }
 
 .topic-notebook-btn-add:hover {
