@@ -199,12 +199,13 @@ body {
 }
 
 .topic-name {
-    min-width: 160px;
-    max-width: 200px;
+    min-width: 140px;
+    max-width: 180px;
     font-weight: 500;
     color: #333;
     font-size: 0.9em;
     line-height: 1.4;
+    flex-shrink: 0;
 }
 
 .topic-control {
@@ -213,19 +214,22 @@ body {
     align-items: flex-end;
     gap: 8px;
     flex: 1;
+    min-width: 0;
 }
 
 .slider-container {
     display: flex;
     align-items: center;
     gap: 8px;
-    min-width: 180px;
     width: 100%;
+    max-width: 300px;
     justify-content: flex-end;
 }
 
 input[type="range"] {
-    width: 140px;
+    flex: 1;
+    min-width: 120px;
+    max-width: 200px;
     height: 6px;
     border-radius: 3px;
     background: #e9ecef;
@@ -453,6 +457,9 @@ input[type="range"]::-moz-range-thumb {
     gap: 6px;
     align-items: center;
     flex-wrap: wrap;
+    width: 100%;
+    max-width: 500px;
+    justify-content: flex-end;
 }
 
 .notebook-btn-wrapper {

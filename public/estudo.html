@@ -515,7 +515,7 @@
                             notebookBtnsContainer.appendChild(notebookWrapper);
                         });
                         
-                        // Botão Adicionar Notebook
+                        // Botão Adicionar Notebook (sempre por último)
                         const addNotebookBtn = document.createElement('button');
                         addNotebookBtn.className = 'topic-notebook-btn topic-notebook-btn-add';
                         addNotebookBtn.innerHTML = '<span>➕</span>';
@@ -525,6 +525,7 @@
                             addTopicNotebook(category, discipline, topic, topicKey);
                         };
                         
+                        // Adicionar botão + sempre no final
                         notebookBtnsContainer.appendChild(addNotebookBtn);
                         
                         // Ordem: slider primeiro, botões depois
@@ -663,6 +664,7 @@
             
             await saveTopicNotebooks();
             renderDisciplines();
+            applyExpansionState(); // Restaurar estado após renderizar
         }
         
         // Função para editar/remover notebook (clique direito)
@@ -690,6 +692,7 @@
                         };
                         await saveTopicNotebooks();
                         renderDisciplines();
+                        applyExpansionState(); // Restaurar estado
                     }
                 }
             } else {
@@ -701,6 +704,7 @@
                     }
                     await saveTopicNotebooks();
                     renderDisciplines();
+                    applyExpansionState(); // Restaurar estado
                 }
             }
         }
