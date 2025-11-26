@@ -547,8 +547,8 @@ input[type="range"]::-moz-range-thumb {
     }
     
     .topic-name {
-        min-width: unset;
-        max-width: unset;
+        min-width: 200px;
+        max-width: 100%;
         width: 100%;
         font-size: 0.85em;
     }
