@@ -249,6 +249,7 @@
                     processoId: currentProcessId,
                     data: progressData,
                     topicNotebooks: topicNotebooks, // IMPORTANTE: salvar notebooks também
+                    topicTimers: topicTimers, // Salvar timers também
                     updatedAt: new Date()
                 });
                 
@@ -290,6 +291,9 @@
                 
                 // Carregar notebooks dos tópicos
                 await loadTopicNotebooks();
+                
+                // Carregar timers dos tópicos
+                await loadTimersFromFirebase();
                 
                 updateSaveStatus('saved', 'Carregado do Firebase');
             } catch (error) {
@@ -529,8 +533,41 @@
                         // Adicionar botão + sempre no final
                         notebookBtnsContainer.appendChild(addNotebookBtn);
                         
-                        // Ordem: slider primeiro, botões depois
+                        // Timer UI
+                        const timerContainer = document.createElement('div');
+                        timerContainer.className = 'topic-timer-container';
+                        
+                        const timerDisplay = document.createElement('div');
+                        timerDisplay.className = 'topic-timer-display';
+                        timerDisplay.id = `timer-display-${topicKey.replace(/[|]/g, '-')}`;
+                        timerDisplay.textContent = formatTime(0);
+                        
+                        const timerButton = document.createElement('button');
+                        timerButton.className = 'topic-timer-btn';
+                        timerButton.id = `timer-btn-${topicKey.replace(/[|]/g, '-')}`;
+                        timerButton.innerHTML = '▶️';
+                        timerButton.title = 'Iniciar temporizador';
+                        timerButton.onclick = (e) => {
+                            e.stopPropagation();
+                            toggleTimer(topicKey);
+                        };
+                        
+                        const timerHistoryBtn = document.createElement('button');
+                        timerHistoryBtn.className = 'topic-timer-history-btn';
+                        timerHistoryBtn.innerHTML = '📊';
+                        timerHistoryBtn.title = 'Ver histórico de tempo';
+                        timerHistoryBtn.onclick = (e) => {
+                            e.stopPropagation();
+                            showTimerHistory(topicKey, topic);
+                        };
+                        
+                        timerContainer.appendChild(timerDisplay);
+                        timerContainer.appendChild(timerButton);
+                        timerContainer.appendChild(timerHistoryBtn);
+                        
+                        // Ordem: slider primeiro, timer, depois botões
                         controlDiv.appendChild(sliderContainer);
+                        controlDiv.appendChild(timerContainer);
                         controlDiv.appendChild(notebookBtnsContainer);
                         
                         topicDiv.appendChild(nameDiv);
@@ -632,7 +669,193 @@
         
         // Armazenamento de notebooks por tópico (array de {name, url})
         let topicNotebooks = {};
+        
+        // Timer data: { topicKey: { active: {start, elapsed}, sessions: [{start, end, duration}] } }
+        let topicTimers = {};
+        let timerIntervals = {}; // Store interval IDs for each active timer
 
+        // Timer Functions
+        function formatTime(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            
+            if (hours > 0) {
+                return `${hours}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            }
+            return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+        
+        function toggleTimer(topicKey) {
+            if (!topicTimers[topicKey]) {
+                topicTimers[topicKey] = { active: null, sessions: [] };
+            }
+            
+            const timer = topicTimers[topicKey];
+            const btnId = `timer-btn-${topicKey.replace(/[|]/g, '-')}`;
+            const btn = document.getElementById(btnId);
+            
+            if (timer.active) {
+                // Stop timer
+                stopTimer(topicKey);
+                btn.innerHTML = '▶️';
+                btn.title = 'Iniciar temporizador';
+            } else {
+                // Start timer
+                startTimer(topicKey);
+                btn.innerHTML = '⏸️';
+                btn.title = 'Pausar temporizador';
+            }
+        }
+        
+        function startTimer(topicKey) {
+            const timer = topicTimers[topicKey];
+            timer.active = {
+                start: Date.now(),
+                elapsed: timer.active ? timer.active.elapsed : 0
+            };
+            
+            // Update display every second
+            timerIntervals[topicKey] = setInterval(() => {
+                updateTimerDisplay(topicKey);
+            }, 1000);
+            
+            updateTimerDisplay(topicKey);
+        }
+        
+        function stopTimer(topicKey) {
+            const timer = topicTimers[topicKey];
+            if (!timer.active) return;
+            
+            // Clear interval
+            if (timerIntervals[topicKey]) {
+                clearInterval(timerIntervals[topicKey]);
+                delete timerIntervals[topicKey];
+            }
+            
+            // Calculate session duration
+            const now = Date.now();
+            const sessionDuration = Math.floor((now - timer.active.start) / 1000) + timer.active.elapsed;
+            
+            // Save session
+            timer.sessions.push({
+                start: timer.active.start - (timer.active.elapsed * 1000),
+                end: now,
+                duration: sessionDuration
+            });
+            
+            timer.active = null;
+            updateTimerDisplay(topicKey);
+            saveTimersToFirebase();
+        }
+        
+        function updateTimerDisplay(topicKey) {
+            const displayId = `timer-display-${topicKey.replace(/[|]/g, '-')}`;
+            const display = document.getElementById(displayId);
+            if (!display) return;
+            
+            const timer = topicTimers[topicKey];
+            if (!timer) {
+                display.textContent = formatTime(0);
+                return;
+            }
+            
+            let totalSeconds = 0;
+            
+            // Add completed sessions
+            if (timer.sessions) {
+                totalSeconds = timer.sessions.reduce((sum, session) => sum + session.duration, 0);
+            }
+            
+            // Add current active session
+            if (timer.active) {
+                const elapsed = Math.floor((Date.now() - timer.active.start) / 1000);
+                totalSeconds += timer.active.elapsed + elapsed;
+            }
+            
+            display.textContent = formatTime(totalSeconds);
+            
+            // Highlight active timers
+            if (timer.active) {
+                display.classList.add('active');
+            } else {
+                display.classList.remove('active');
+            }
+        }
+        
+        function showTimerHistory(topicKey, topicName) {
+            const timer = topicTimers[topicKey];
+            if (!timer || !timer.sessions || timer.sessions.length === 0) {
+                alert(`📊 Nenhuma sessão registrada para: ${topicName}`);
+                return;
+            }
+            
+            let totalSeconds = timer.sessions.reduce((sum, s) => sum + s.duration, 0);
+            let message = `📊 Histórico de Tempo - ${topicName}\n\n`;
+            message += `⏱️ Tempo Total: ${formatTime(totalSeconds)}\n\n`;
+            message += `📅 Sessões (${timer.sessions.length}):\n`;
+            
+            timer.sessions.forEach((session, index) => {
+                const date = new Date(session.start);
+                const dateStr = date.toLocaleDateString('pt-BR');
+                const timeStr = date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                message += `${index + 1}. ${dateStr} às ${timeStr} - ${formatTime(session.duration)}\n`;
+            });
+            
+            alert(message);
+        }
+        
+        async function saveTimersToFirebase() {
+            if (!currentProcessId) return;
+            
+            try {
+                const auth = window.firebaseAuth;
+                if (!auth.currentUser) return;
+                
+                const progressId = `${auth.currentUser.uid}_${currentProcessId}`;
+                await setDoc(doc(db, 'progress', progressId), {
+                    userId: auth.currentUser.uid,
+                    processoId: currentProcessId,
+                    progressData: progressData,
+                    topicNotebooks: topicNotebooks,
+                    topicTimers: topicTimers,
+                    lastUpdated: serverTimestamp()
+                }, { merge: true });
+                
+                console.log('⏱️ Timers salvos com sucesso!');
+            } catch (error) {
+                console.error('❌ Erro ao salvar timers:', error);
+            }
+        }
+        
+        async function loadTimersFromFirebase() {
+            if (!currentProcessId) return;
+            
+            try {
+                const auth = window.firebaseAuth;
+                if (!auth.currentUser) return;
+                
+                const progressId = `${auth.currentUser.uid}_${currentProcessId}`;
+                const docSnap = await getDoc(doc(db, 'progress', progressId));
+                
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    topicTimers = data.topicTimers || {};
+                    
+                    // Clean up any active timers (they shouldn't persist across sessions)
+                    Object.keys(topicTimers).forEach(key => {
+                        if (topicTimers[key].active) {
+                            topicTimers[key].active = null;
+                        }
+                    });
+                    
+                    console.log('⏱️ Timers carregados:', Object.keys(topicTimers).length);
+                }
+            } catch (error) {
+                console.error('❌ Erro ao carregar timers:', error);
+            }
+        }
+        
         // Função para adicionar notebook a um tópico
         async function addTopicNotebook(category, discipline, topic, topicKey) {
             // Escolher tipo de material
@@ -966,6 +1189,13 @@
         
         // Salvar automaticamente ao sair
         window.addEventListener('beforeunload', () => {
+            // Stop all active timers
+            Object.keys(topicTimers).forEach(topicKey => {
+                if (topicTimers[topicKey].active) {
+                    stopTimer(topicKey);
+                }
+            });
+            
             if (autoSaveTimer) {
                 clearTimeout(autoSaveTimer);
                 // Salvar de forma síncrona ao sair (melhor esforço)
