@@ -816,15 +816,17 @@
                 await setDoc(doc(db, 'progress', progressId), {
                     userId: auth.currentUser.uid,
                     processoId: currentProcessId,
-                    progressData: progressData,
+                    data: progressData,
                     topicNotebooks: topicNotebooks,
                     topicTimers: topicTimers,
-                    lastUpdated: serverTimestamp()
+                    updatedAt: new Date()
                 }, { merge: true });
                 
                 console.log('⏱️ Timers salvos com sucesso!');
+                updateSaveStatus('saved', 'Timer salvo');
             } catch (error) {
                 console.error('❌ Erro ao salvar timers:', error);
+                updateSaveStatus('error', 'Erro ao salvar timer');
             }
         }
         
