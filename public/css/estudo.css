@@ -40,15 +40,15 @@ body {
 
 /* Skeleton Loading */
 .skeleton {
-    background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 75%);
+    background: linear-gradient(110deg, #e0e0e0 8%, #f0f0f0 18%, #e0e0e0 33%);
     background-size: 200% 100%;
-    animation: loading 1.5s ease-in-out infinite;
+    animation: shimmer 1.8s linear infinite;
     border-radius: 8px;
 }
 
-@keyframes loading {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
 }
 
 .page-title-skeleton {
@@ -61,6 +61,9 @@ body {
     height: 28px;
     width: 300px;
     max-width: 80%;
+    background: linear-gradient(110deg, rgba(255,255,255,0.15) 8%, rgba(255,255,255,0.3) 18%, rgba(255,255,255,0.15) 33%);
+    background-size: 200% 100%;
+    animation: shimmer 1.8s linear infinite;
 }
 
 .page-title-loaded {
@@ -78,39 +81,81 @@ body {
     animation: fadeIn 0.3s ease-in;
 }
 
+/* Skeleton Categoria */
+.skeleton-category {
+    margin-bottom: 40px;
+}
+
+.skeleton-category-header {
+    height: 60px;
+    background: linear-gradient(110deg, rgba(102, 126, 234, 0.08) 8%, rgba(118, 75, 162, 0.12) 18%, rgba(102, 126, 234, 0.08) 33%);
+    background-size: 200% 100%;
+    animation: shimmer 1.8s linear infinite;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.skeleton-category-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Skeleton Disciplina */
 .skeleton-discipline {
-    margin-bottom: 30px;
     border: 2px solid #e9ecef;
     border-radius: 15px;
     overflow: hidden;
+    background: white;
 }
 
-.skeleton-header {
-    height: 70px;
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: loading 1.5s ease-in-out infinite;
-}
-
-.skeleton-topics {
-    padding: 20px;
-    background: #f8f9fa;
+.skeleton-discipline-header {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-.skeleton-topic {
-    height: 50px;
-    background: linear-gradient(90deg, #e8e8e8 25%, #d8d8d8 50%, #e8e8e8 75%);
+.skeleton-discipline-title {
+    flex: 1;
+    height: 24px;
+    background: linear-gradient(110deg, rgba(255,255,255,0.2) 8%, rgba(255,255,255,0.35) 18%, rgba(255,255,255,0.2) 33%);
     background-size: 200% 100%;
-    animation: loading 1.5s ease-in-out infinite;
-    border-radius: 8px;
+    animation: shimmer 1.8s linear infinite;
+    border-radius: 6px;
+    max-width: 60%;
+}
+
+.skeleton-discipline-progress {
+    width: 180px;
+    height: 20px;
+    background: linear-gradient(110deg, rgba(255,255,255,0.2) 8%, rgba(255,255,255,0.35) 18%, rgba(255,255,255,0.2) 33%);
+    background-size: 200% 100%;
+    animation: shimmer 1.8s linear infinite;
+    border-radius: 10px;
 }
 
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .skeleton-discipline-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .skeleton-discipline-title {
+        max-width: 100%;
+    }
+    
+    .skeleton-discipline-progress {
+        width: 100%;
+    }
 }
 
 .progress-overview {
