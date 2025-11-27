@@ -540,7 +540,14 @@
                         const timerDisplay = document.createElement('div');
                         timerDisplay.className = 'topic-timer-display';
                         timerDisplay.id = `timer-display-${topicKey.replace(/[|]/g, '-')}`;
-                        timerDisplay.textContent = formatTime(0);
+                        
+                        // Calcular tempo total das sessões para exibição inicial
+                        const timer = topicTimers[topicKey];
+                        let initialTime = 0;
+                        if (timer && timer.sessions) {
+                            initialTime = timer.sessions.reduce((sum, s) => sum + s.duration, 0);
+                        }
+                        timerDisplay.textContent = formatTime(initialTime);
                         
                         const timerButton = document.createElement('button');
                         timerButton.className = 'topic-timer-btn';
