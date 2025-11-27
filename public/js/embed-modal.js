@@ -70,8 +70,7 @@ class EmbedModal {
                         <iframe 
                             id="embedIframe" 
                             class="embed-iframe"
-                            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
-                            allow="accelerometer 'none'; camera 'none'; geolocation 'none'; microphone 'none'"
+                            sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
                             style="display: none;"
                             title="Conteúdo incorporado"
                         ></iframe>
@@ -131,11 +130,14 @@ class EmbedModal {
             const allowedOrigins = [
                 'https://colab.research.google.com',
                 'https://www.youtube.com',
+                'https://alego-conteudo.web.app',
+                'https://alego-conteudo.firebaseapp.com',
                 window.location.origin
             ];
             
             if (!allowedOrigins.some(origin => event.origin.startsWith(origin))) {
-                console.warn('Message from untrusted origin:', event.origin);
+                // Silenciar logs de origens não confiáveis (extensões do navegador, etc)
+                // console.warn('Message from untrusted origin:', event.origin);
                 return;
             }
             
@@ -145,6 +147,11 @@ class EmbedModal {
 
     handlePostMessage(data, origin) {
         if (!data || typeof data !== 'object') return;
+        
+        // Ignorar mensagens de extensões do navegador e outros scripts
+        if (!data.type || data.source === 'react-devtools-content-script' || data.source === 'react-devtools-bridge') {
+            return;
+        }
         
         switch (data.type) {
             case 'ready':
@@ -181,7 +188,9 @@ class EmbedModal {
                 break;
                 
             default:
-                console.log('Unknown message type:', data.type);
+                // Silenciar logs de mensagens desconhecidas (podem ser de extensões)
+                // console.log('Unknown message type:', data.type);
+                break;
         }
     }
 
