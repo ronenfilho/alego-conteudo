@@ -137,6 +137,64 @@ body {
     border-radius: 10px;
 }
 
+/* Skeleton Progress Overview */
+.skeleton-progress-overview {
+    margin: 30px auto;
+    max-width: 1200px;
+}
+
+.skeleton-progress-card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.skeleton-progress-title {
+    height: 32px;
+    width: 200px;
+    margin-bottom: 25px;
+    background: linear-gradient(110deg, #e8e8e8 8%, #f0f0f0 18%, #e8e8e8 33%);
+    background-size: 200% 100%;
+    animation: shimmer 1.8s linear infinite;
+}
+
+.skeleton-progress-bar {
+    height: 40px;
+    margin-bottom: 30px;
+    background: linear-gradient(110deg, #e0e0e0 8%, #f0f0f0 18%, #e0e0e0 33%);
+    background-size: 200% 100%;
+    animation: shimmer 1.8s linear infinite;
+}
+
+.skeleton-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.skeleton-stat {
+    text-align: center;
+}
+
+.skeleton-stat-value {
+    height: 36px;
+    width: 80px;
+    margin: 0 auto 10px;
+    background: linear-gradient(110deg, #e8e8e8 8%, #f0f0f0 18%, #e8e8e8 33%);
+    background-size: 200% 100%;
+    animation: shimmer 1.8s linear infinite;
+}
+
+.skeleton-stat-label {
+    height: 16px;
+    width: 120px;
+    margin: 0 auto;
+    background: linear-gradient(110deg, #f0f0f0 8%, #f8f8f8 18%, #f0f0f0 33%);
+    background-size: 200% 100%;
+    animation: shimmer 1.8s linear infinite;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -155,6 +213,11 @@ body {
     
     .skeleton-discipline-progress {
         width: 100%;
+    }
+    
+    .skeleton-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
     }
 }
 

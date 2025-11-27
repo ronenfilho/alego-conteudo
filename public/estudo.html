@@ -44,6 +44,32 @@
             </div>
         </div>
 
+        <!-- Skeleton Progress Overview -->
+        <div class="skeleton-progress-overview" id="skeletonProgressOverview">
+            <div class="skeleton-progress-card">
+                <div class="skeleton skeleton-progress-title"></div>
+                <div class="skeleton skeleton-progress-bar"></div>
+                <div class="skeleton-stats-grid">
+                    <div class="skeleton-stat">
+                        <div class="skeleton skeleton-stat-value"></div>
+                        <div class="skeleton skeleton-stat-label"></div>
+                    </div>
+                    <div class="skeleton-stat">
+                        <div class="skeleton skeleton-stat-value"></div>
+                        <div class="skeleton skeleton-stat-label"></div>
+                    </div>
+                    <div class="skeleton-stat">
+                        <div class="skeleton skeleton-stat-value"></div>
+                        <div class="skeleton skeleton-stat-label"></div>
+                    </div>
+                    <div class="skeleton-stat">
+                        <div class="skeleton skeleton-stat-value"></div>
+                        <div class="skeleton skeleton-stat-label"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="content" id="disciplinesContainer">
             <!-- Skeleton Loading -->
             <div class="skeleton-container" id="skeletonLoader">
@@ -436,7 +462,12 @@
             const container = document.getElementById('disciplinesContainer');
             container.innerHTML = '';
             
-            // Mostrar progress overview após carregar
+            // Ocultar skeleton progress e mostrar progress overview real
+            const skeletonProgress = document.getElementById('skeletonProgressOverview');
+            if (skeletonProgress) {
+                skeletonProgress.style.display = 'none';
+            }
+            
             const progressOverview = document.getElementById('progressOverview');
             if (progressOverview) {
                 progressOverview.style.opacity = '1';
