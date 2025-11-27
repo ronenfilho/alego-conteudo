@@ -12,7 +12,10 @@
         <div class="header" style="position: relative; padding-top: 60px;">
             <button class="btn-back" id="backBtn" onclick="window.location.href='processos.html'" style="position: absolute; top: 15px; left: 20px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; z-index: 10;">← Voltar</button>
             <h1>📊 Controle de Estudos</h1>
-            <p id="pageTitle">Carregando...</p>
+            <div id="pageTitle" class="page-title-loading">
+                <div class="loading-spinner"></div>
+                <span>Carregando...</span>
+            </div>
         </div>
 
         <div class="progress-overview">
@@ -128,7 +131,9 @@
                 
                 const processo = docSnap.data();
                 currentProcesso = { id: currentProcessId, ...processo };
-                document.getElementById('pageTitle').textContent = processo.name;
+                const pageTitleEl = document.getElementById('pageTitle');
+                pageTitleEl.className = 'page-title-loaded';
+                pageTitleEl.innerHTML = processo.name;
                 
                 // Parse do conteúdo markdown
                 studyContent = parseMarkdownToContent(processo.content);
