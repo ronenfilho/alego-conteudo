@@ -12,13 +12,12 @@
         <div class="header" style="position: relative; padding-top: 60px;">
             <button class="btn-back" id="backBtn" onclick="window.location.href='processos.html'" style="position: absolute; top: 15px; left: 20px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; z-index: 10;">← Voltar</button>
             <h1>📊 Controle de Estudos</h1>
-            <div id="pageTitle" class="page-title-loading">
-                <div class="loading-spinner"></div>
-                <span>Carregando...</span>
+            <div id="pageTitle" class="page-title-skeleton">
+                <div class="skeleton skeleton-text"></div>
             </div>
         </div>
 
-        <div class="progress-overview">
+        <div class="progress-overview" id="progressOverview">
             <div class="progress-card">
                 <h2>Progresso Geral</h2>                
                 <div class="progress-bar-container">
@@ -45,7 +44,35 @@
             </div>
         </div>
 
-        <div class="content" id="disciplinesContainer"></div>
+        <div class="content" id="disciplinesContainer">
+            <!-- Skeleton Loading -->
+            <div class="skeleton-container" id="skeletonLoader">
+                <div class="skeleton-discipline">
+                    <div class="skeleton skeleton-header"></div>
+                    <div class="skeleton-topics">
+                        <div class="skeleton skeleton-topic"></div>
+                        <div class="skeleton skeleton-topic"></div>
+                        <div class="skeleton skeleton-topic"></div>
+                    </div>
+                </div>
+                <div class="skeleton-discipline">
+                    <div class="skeleton skeleton-header"></div>
+                    <div class="skeleton-topics">
+                        <div class="skeleton skeleton-topic"></div>
+                        <div class="skeleton skeleton-topic"></div>
+                    </div>
+                </div>
+                <div class="skeleton-discipline">
+                    <div class="skeleton skeleton-header"></div>
+                    <div class="skeleton-topics">
+                        <div class="skeleton skeleton-topic"></div>
+                        <div class="skeleton skeleton-topic"></div>
+                        <div class="skeleton skeleton-topic"></div>
+                        <div class="skeleton skeleton-topic"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="buttons">
             <div class="save-status" id="saveStatusIndicator">
@@ -137,6 +164,12 @@
                 
                 // Parse do conteúdo markdown
                 studyContent = parseMarkdownToContent(processo.content);
+                
+                // Remover skeleton loading
+                const skeletonLoader = document.getElementById('skeletonLoader');
+                if (skeletonLoader) {
+                    skeletonLoader.remove();
+                }
                 return studyContent;
             } catch (error) {
                 console.error('Erro ao carregar processo:', error);
@@ -376,6 +409,12 @@
         function renderDisciplines() {
             const container = document.getElementById('disciplinesContainer');
             container.innerHTML = '';
+            
+            // Mostrar progress overview após carregar
+            const progressOverview = document.getElementById('progressOverview');
+            if (progressOverview) {
+                progressOverview.style.opacity = '1';
+            }
 
             for (const [category, categoryData] of Object.entries(studyContent)) {
                 const categoryContainer = document.createElement('div');

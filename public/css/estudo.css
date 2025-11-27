@@ -38,14 +38,29 @@ body {
     font-size: 1.1em;
 }
 
-/* Page Title Loading */
-.page-title-loading {
+/* Skeleton Loading */
+.skeleton {
+    background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s ease-in-out infinite;
+    border-radius: 8px;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.page-title-skeleton {
     display: flex;
-    align-items: center;
     justify-content: center;
-    gap: 12px;
-    opacity: 0.9;
-    font-size: 1.1em;
+    padding: 8px 0;
+}
+
+.skeleton-text {
+    height: 28px;
+    width: 300px;
+    max-width: 80%;
 }
 
 .page-title-loaded {
@@ -54,22 +69,48 @@ body {
     animation: fadeIn 0.5s ease-in;
 }
 
-.loading-spinner {
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+.progress-overview {
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
+.skeleton-container {
+    animation: fadeIn 0.3s ease-in;
+}
+
+.skeleton-discipline {
+    margin-bottom: 30px;
+    border: 2px solid #e9ecef;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.skeleton-header {
+    height: 70px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s ease-in-out infinite;
+}
+
+.skeleton-topics {
+    padding: 20px;
+    background: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.skeleton-topic {
+    height: 50px;
+    background: linear-gradient(90deg, #e8e8e8 25%, #d8d8d8 50%, #e8e8e8 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s ease-in-out infinite;
+    border-radius: 8px;
 }
 
 @keyframes fadeIn {
     from { opacity: 0; }
-    to { opacity: 0.9; }
+    to { opacity: 1; }
 }
 
 .progress-overview {
