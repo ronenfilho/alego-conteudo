@@ -11,7 +11,7 @@ service cloud.firestore {
       return request.auth.uid == userId;
     }
     
-    // Regras para a coleção de processos seletivos
+    // Regras para a coleção de estudos
     match /processos/{processoId} {
       // Permitir leitura apenas para o dono
       allow read: if isAuthenticated() && isOwner(resource.data.userId);

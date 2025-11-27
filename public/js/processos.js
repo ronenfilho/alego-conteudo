@@ -1,4 +1,4 @@
-// processos.js - Gerenciamento de Processos Seletivos
+// processos.js - Gerenciamento de Estudos
 import { 
     collection, 
     addDoc, 
