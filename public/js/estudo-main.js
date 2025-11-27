@@ -1034,7 +1034,7 @@ function importProgress(event) {
 
 async function initPage() {
     try {
-        const { firebaseConfig } = await import('./js/firebase-config.js');
+        const { firebaseConfig } = await import('./firebase-config.js');
         
         const app = initializeApp(firebaseConfig);
         window.firebaseAuth = getAuth(app);
