@@ -49,7 +49,7 @@ async function loadStudyContent() {
         const processo = docSnap.data();
         currentProcesso = { id: currentProcessId, ...processo };
         const pageTitleEl = document.getElementById('pageTitle');
-        pageTitleEl.className = 'page-title-loaded';
+        pageTitleEl.className = 'page-title-compact page-title-loaded';
         pageTitleEl.innerHTML = processo.name;
         
         studyContent = parseMarkdownToContent(processo.content);

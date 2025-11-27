@@ -9,11 +9,17 @@
 </head>
 <body>
     <div class="container">
-        <div class="header" style="position: relative; padding-top: 60px;">
-            <button class="btn-back" id="backBtn" onclick="window.location.href='processos.html'" style="position: absolute; top: 15px; left: 20px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; z-index: 10;">← Voltar</button>
-            <h1>📊 Controle de Estudos</h1>
-            <div id="pageTitle" class="page-title-skeleton">
-                <div class="skeleton skeleton-text"></div>
+        <div class="header-compact">
+            <button class="btn-back-compact" onclick="window.location.href='processos.html'" title="Voltar para processos">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            <div class="header-content">
+                <div class="header-badge">📊 Estudos</div>
+                <div id="pageTitle" class="page-title-compact">
+                    <div class="skeleton skeleton-text"></div>
+                </div>
             </div>
         </div>
 
@@ -157,11 +163,10 @@
         </div>
     </div>
 
-
     <script type="module" src="js/estudo-main.js"></script>
     
-    
     <script src="js/embed-modal.js"></script>
+
     <script>
         // Inicializar EmbedModal quando a página carregar
         window.addEventListener('load', () => {
