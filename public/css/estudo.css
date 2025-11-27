@@ -160,8 +160,8 @@ body {
 }
 
 .skeleton-progress-bar {
-    height: 40px;
-    margin-bottom: 30px;
+    height: 30px;
+    border-radius: 10px;
     background: linear-gradient(110deg, #e0e0e0 8%, #f0f0f0 18%, #e0e0e0 33%);
     background-size: 200% 100%;
     animation: shimmer 1.8s linear infinite;
@@ -170,29 +170,35 @@ body {
 .skeleton-stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    gap: 15px;
+    margin-top: 20px;
 }
 
 .skeleton-stat {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    border-radius: 10px;
     text-align: center;
 }
 
 .skeleton-stat-value {
-    height: 36px;
+    height: 32px;
     width: 80px;
-    margin: 0 auto 10px;
-    background: linear-gradient(110deg, #e8e8e8 8%, #f0f0f0 18%, #e8e8e8 33%);
+    margin: 0 auto 5px;
+    background: linear-gradient(110deg, rgba(255,255,255,0.2) 8%, rgba(255,255,255,0.35) 18%, rgba(255,255,255,0.2) 33%);
     background-size: 200% 100%;
     animation: shimmer 1.8s linear infinite;
+    border-radius: 6px;
 }
 
 .skeleton-stat-label {
-    height: 16px;
+    height: 14px;
     width: 120px;
     margin: 0 auto;
-    background: linear-gradient(110deg, #f0f0f0 8%, #f8f8f8 18%, #f0f0f0 33%);
+    background: linear-gradient(110deg, rgba(255,255,255,0.15) 8%, rgba(255,255,255,0.25) 18%, rgba(255,255,255,0.15) 33%);
     background-size: 200% 100%;
     animation: shimmer 1.8s linear infinite;
+    border-radius: 4px;
 }
 
 @keyframes fadeIn {
