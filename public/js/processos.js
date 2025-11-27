@@ -58,7 +58,7 @@ logoutBtn.addEventListener('click', async () => {
 // Abrir modal para novo processo
 newProcessBtn.addEventListener('click', () => {
     editingProcessId = null;
-    modalTitle.textContent = 'Novo Processo Seletivo';
+    modalTitle.textContent = 'Programa de Estudo';
     processForm.reset();
     openModal();
 });
@@ -226,7 +226,7 @@ window.editProcesso = async function(id) {
         document.getElementById('processDescription').value = processo.description || '';
         document.getElementById('processContent').value = processo.content;
         
-        modalTitle.textContent = 'Editar Processo Seletivo';
+        modalTitle.textContent = 'Editar Estudo';
         openModal();
     } catch (error) {
         console.error('Erro ao carregar processo:', error);

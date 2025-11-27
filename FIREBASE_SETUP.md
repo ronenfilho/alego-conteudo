@@ -139,7 +139,7 @@ Acesse: `http://localhost:5000`
 - Faça login com Google ou crie uma conta com email/senha
 
 ### 2. Criar Processo Seletivo
-- Na página de processos, clique em "**➕ Novo Processo Seletivo**"
+- Na página de processos, clique em "**➕ Estudo**"
 - Preencha:
   - **Nome**: Nome do processo (ex: "Analista Legislativo - ALEGO")
   - **Descrição**: Descrição opcional
